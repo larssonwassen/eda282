@@ -1,14 +1,18 @@
 \section{Intelligent Refresh Techniques} 
 \label{sec:int}
 
-Say a little about every technique.
 \subsection{Access Recency}
+DRAM accesses imply refresh operations, and so a subsequent refresh to the same row can be postponed. The number of rows affected depends on how many different rows are accessed within the maximum refresh period, which may be few for many workloads. Ghosh et al. [9] propose Smart Refresh, which divides the refresh period into phases and maintains a per-row timeout counter in the MC. The MC decrements the counters each phase and issues a RAS-only refresh when a counter hits zero.
 
 
 \subsection{Retention}
-
+Retention time refers to the period during which cells hold valid values as charge gradually leaks. Process variation [10][16] causes the retention time of DRAM cells to vary across the chip. Note that approaches that ex-
+ploit R information are insensitive to system workloads and global memory usage, which makes them attractive ompo
+nents for a refresh-optimized memory subsystem.
 
 \subsection{Tolerance}
-
+Applications like games, media processing, machine learning, and unstructured information analysis tolerate errors in portions of their data and still produce acceptably accurate results. Approximate computation [31, 8] exploits this approximate data to realize tradeoffs among performance, energy, and accuracy. Cells containing such error-tolerant T data need not be refreshed as often as those containing critical data. How many cells fall into this category depends on application characteristics.
 
 \subsection{Validity}
+If the OS has not allocated the page frame, its data are meaningless, and refreshes to it are wasteful. Severa
+l software approaches thus attempt to trigger refreshes only for rows with valid data. The effectiveness of schemes using such V refresh information is sensitive to the total memory usage of the system.

@@ -13,7 +13,7 @@
 # these rules might exclude image files for figures etc.
 # *.ps
 # *.eps
- *.pdf
+*.pdf
 .DS_Store
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
