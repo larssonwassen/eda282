@@ -1,21 +1,12 @@
 \section{Retention}
 \label{sec:ret}
 
-Zehan Cui et al. \cite{dtail}
+Zehan Cui et al. \cite{dtail} propses DTail-R in which data for row retention time is stored in the DRAM itself instead of storing it in the memory controller. To counter the added latency of a slower memory they utilizes the spatial locality of the retention data and does prefetching. Zehan Cui et al. also proposes DTail-V which can be combined with DTail-R and is further discussed in \ref{sec:val}. The retention time data consists of a 4 bit integer which is multiplied with 64ms to get the rows refresh period. They does not mention any compensation for temperature neither how they propose to aquire the retentio time data. DTail manages to decrease the amount of refreshes with 87.9\% and only have 16.7\% energy overhead comapred to a ideal 32GB DRAM (no refreshes).
 
-RAIDR  by Jinghui Liu et al. \cite{raidr}
+RAIDR by Jinghui Liu et al. \cite{raidr} divides all memory rows into different bins based on their retention time. They then refresh rows which have bad cells in them at normal interval while the other rows with healthier cells gets refreshed less frequent. The implementation is done inside the memory controller and the storage of the retention time in the bins is done using Bloom filters. To acomodate for temperature variations they scale all bins refresh times which is suboptimal. With RAIDR they achieve a decrease in power consumption of 16.1\% and a performance improvment of 8.6\% with only 1.25 KB storage overhead (in a 32 GB system).
   
-RIO is a technique proposed by Seungjae Baek et al. \cite{rioparis}
+RIO is a technique proposed by Seungjae Baek et al. \cite{rioparis} in which they identify cells with low retention time (bad cells) and `deletes'. This is done by changing the memory allocating modules of the OS to not allocate pages that have bad cells in them. They implement RIO in a Linux kernel which is run and tested on a real hardware system and is able to achieve 87.5\% reduction in refresh count with a performance increas of 4.5\% on average. As the implementaion only relies on changes in the kernel and there is no need to modify the hardware this technique would be easy to adopt. A maximum of only 0.1\% of total memory pages gets `deleted' and it is temperature aware. Seungjae Baek et al. also propose PARIS discussed in \ref{sec:val} which can be combined with RIO for further improvments.
 
-With SECRET Chung-Hsiang Lin et al. \cite{secret} masks bad cells using Error Correction Pointers (ECP). The bad cells are maped with a one time profiling done before first system use and all cells that dont meet the retention time requirements gets a ECP. A ECP is basiclly a pointer to another cell that is healthy. The framwork which is implemented inside the memory controller checks wheter there is any valid ECP for every address accessed. If there is, it replaces the bad cell(s) data with the data from ECP cell instead.
-
-This method gives a high energy saving of up to 87.2\% in refresh power and a reduction of 18.57\% in total DRAM power consumption. 
-
-
-
-RAIDR
-Software approach that can exploit off-the-shelf DRAMs to reduce refresh power to vanishingly
-small levels approaching non-volatile memory. The key idea is to favor longer-retention pages over shorter-retention pages when allocating DRAM pages. This allows selecting a single refresh period that depends on the shortest-retention page among populated pages,
-instead of the shortest-reten tion page overall. 
-
-
+With SECRET Chung-Hsiang Lin et al. \cite{secret} masks bad cells using Error Correction Pointers (ECP). The bad cells are maped with a one time profiling done before first system use and all cells that dont meet the retention time requirements gets a ECP. A ECP is basiclly a pointer to another cell that is healthy. The framwork which is implemented inside the memory controller checks whether there is any valid ECP for every address accessed. If there is, it replaces the bad cell(s) data with the data from ECP cell(s) instead.
+This method gives a high energy saving of up to 87.2\% in refresh power and a reduction of 18.57\% in total DRAM power consumption with the RCP cach overhead taken into account.
+The performance impact ranges from 1.3\% overhad att the worst test case to 1.4\% improvment at its best. The degredation of performance is due to the added memory access needed and the improvment is for the decreased congestion due to refreshes.
