@@ -3,22 +3,43 @@
 
 Papers that use this technique:
 
-\subsection{smart\cite{smartrefresh} - from 2007}
-
+\subsection{Smart Refresh\cite{smartrefresh} - from 2007}
 The basic concept behind our scheme is that a memory row that has been recently read out or written to does not need to be refreshed again by the periodic refresh mechanism.
 
-Uses a time-out counter for each memory row. The counter is set on a read/write/refresh and dicards refreshes until the timer hits zero. The counter is associated to a bank/row pair. The counters are stored in the memory controller. One counter consists of 2 bits.
+Uses a time-out counter for each memory row. The counter is set on a read/write/refresh and dicards refreshes until the timer hits zero. The counter is associated to a bank/row pair. The counters are stored in the memory controller. One counter consists of 2 SRAM bits. More bits give higher granularity and thus also better performance, the refresh is made less often.
 
-This scheme will be most effective if all rows are accessed before a refresh is needed.
+This scheme will be most effective if all rows are accessed before a refresh is needed. If no accesses are made = the entire working set fits into cache, Smart Refresh becomes CBR (CAS before RAS). Only refresh one row at a time = inefficient, so they have made it possible to turn the technique off.
 
 Implemented so only one row per each logical segments are deremented at the same time, which leads to that the refreshes are evenly distributed over time. (I.e. no burst refresh.)
 
+Overhead: 48KB for 2GB and 768 KB for 32GB = 0,0024\% overhead. 
 
+Average reduction of refreshes by 59.3\% for 2GB and 52.3\% energy saving regarding the DRAM refresh. No performance degradation.
 
 Employed its solution to 2 GB ram. What about todays sizes? How effective is the technique now? - Only works effective if large parts the memory is acccessed, i.e. large part of the memory has to be valid to begin with. Is it so today?
 
-By employing a time-out counter for each memory row of a DRAM module, all the unnecessary periodic refresh operations can be eliminated. The basic concept behind our scheme is that a DRAM row that was recently read or written to by the processor (or other devices that share the same DRAM) does not need to be refreshed again by the periodic refresh operation, thereby eliminating excessive refreshes and the energy dissipated.
+\subsection{Refrint\cite{refrint} - from 2013}
+Tageted towards caches and eDRAM.
 
-\subsection{refrint\cite{refrint} - from 2013}
+Our goal is to refresh only the data that will be used in the near future, and only refresh it if it is really needed. The other data is invalidated and/ or written back to main memory.
 
-P. Emma et al.
+The technique target to minimize the refresh for the so called hot and cold lines. Hot lines are those being accessed and thus unnesssesary refreshed by the refresh mechanism, whereas the cold lines are those that hasn't been used in a while but still gets refreshed.
+
+To minimize the refresh for hot lines time-based policies are used. Normally a counter - Polyphase - is used, which practicly works in the same way as the time-out counters for Smart Refresh. It consists of two bits. They also has a basic periodic refresh scheme (why?).
+
+For the cold lines four different (data-based) policies can be applied: all, valid, dirty or WB(n,m). "All" refreshes all lines. Valid refreshes the valid lines. Dirty refreshes the dirty lines.The WB policy is associated with a tuple (n, m). WB refreshes a Dirty line that is not being accessed for n times before writing it back and changing its state to Valid Clean; moreover, it refreshes a Valid Clean line that is not being accessed for m times before invalidating it. WB retains a Dirty line in the cache Ion ger because evicting it has the additional cost of writing the line back to lower-Ievel memory. To implement WB, we maintain a per-Iine Count. W hen the line is read or written, Count is set to n (if Dirty) or m (if Valid Clean). In addition, when the line is refreshed, Count is decremented. W hen Count reaches zero, the line is either written back or invalidated. Note that the Dirty policy is equivalent to WB(oo,O), while Valid is equivalent to WB(oo,oo). Finally, every policy refreshes cache Iines in transient states as well.
+
+They have application categorization for the data-based policies (Cold ones). TODO
+
+Implementation: Hot lines. They use a global counter with M bits (M = 1 or 2). When a line is accessed, the global counter is copied to N bits associated to the line and those N bits are stored with the valid bit in the memory controller. If N = 2, the overhead becomes 0.6\%. When the global counter steps to a new phase, all normal accesses are stalled and the logic controlls the valid lines and its local phase bits to see if it matches the global phase. If there is a match, a refresh is scheduled. Otherwise the memory goes back to normal operation after the scan. 
+
+Implementation: Cold lines. TODO
+
+\subsection{Differences and similarities}
+
+Refrint is somewhat a extension of Smart Refresh. Smart Refresh's features can be laid somewhat equal to Refrint's time-based polices, wheras the data-based polices have no eqvivalence in Smart Refresh.
+
+They both modify the memory controller, and almost in the same way. But Refrint has no timers that is getting decremented the whole time, and instead copies a global "timer" to the line associated bits upon access. Of cource Refrint's data-based polices also adds logic to the memory controller.
+
+Discuss energy savings.
+

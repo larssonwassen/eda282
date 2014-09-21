@@ -1,6 +1,7 @@
-\section{Intelligent Refresh Techniques} 
+\section{Methods for decreasing the refresh rate} 
 \label{sec:int}
 
+Give a deeper understanding about different methods for decreasing the refresh rate.
 \subsection{Access Recency}
 DRAM accesses imply refresh operations, and so a subsequent refresh to the same row can be postponed. The number of rows affected depends on how many different rows are accessed within the maximum refresh period, which may be few for many workloads. Ghosh et al. [9] propose Smart Refresh, which divides the refresh period into phases and maintains a per-row timeout counter in the MC. The MC decrements the counters each phase and issues a RAS-only refresh when a counter hits zero.
 
