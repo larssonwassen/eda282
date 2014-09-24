@@ -1,0 +1,30 @@
+INTRO
+  energy is an inc. system design constraint
+  man mem consumes a groving portion of system power and this will continue to increase (details & refs in background)
+  most mani memories include dram
+  two ssources of powerconsumption in DRAM static/dynamic (blahah/driving data)
+  static leakage
+  DRAM refresh ops account for a groing portion of dynamic power, yet they perform no usefiul accesses (from cpu perspective)
+  finding ways to reduce power spent on frefresh is a straightfroward way to mitigate DRAM power
+
+{Whats the problem?
+ WHy is it important?
+ What is the shape of the solution?
+ Why will it work? (dont go intol detail, this is a survey paper)
+ }
+
+BACKGROUND
+  DRAM explination w/ pic.
+  basic op
+  refresh modes? (options)
+  trends - Storage array rectangular
+            cant go wider (word lines length -> timing -> power)
+            gets taller -> more refreshes
+            over time .... projektions
+
+REDUCING REFRESH POWER
+  roadmap - (Worth mentioning scheduling real acces togheter with refresh ops)
+            vs. trying to ID unnecessary or deferable refreshes
+  We focus on second!
+  1. types of refreshing
+  2. paragraph per approach/sets of apporaches wrt infon in 1.
