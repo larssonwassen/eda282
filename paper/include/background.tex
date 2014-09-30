@@ -1,17 +1,35 @@
 \section{Background} 
 \label{sec:bg}
+In this section we give a brief overview of DRAM, covering the organization, basic operation, refresh modes, and trends together with projections for the DRAM structure.
 
-Explain the DRAM structure. Use picture.
+DRAM is hierarichally organized as \reffig{fig:dram_orga} shows. At the top of the hierarchy are the channels that are connected to one or more ranks. Each channel has individual address, data, and command buses that makes it possible for the channels to operate cuncurrently. All ranks on one channel can operate in parallel constrained by the channel bandwith which is shared among the ranks. A rank comprizes of several banks where one bank holds a DRAM cell array. The banks are thus also able to work in parallel, but are constrianed by both the shared channel bandwith and resources shared among the banks. 
 
+The DRAM cell array in each bank is structured as \reffig{fig:dram_orgb} shows. One cell consists of a transistor and a capacitor, where the transistor is controlled by the wordline wire and connects the capacitor to the bitline wire. The wordline connects a number of cells which forms a row. Each bitline is connected to a sens amplifier and the row of sens amplifier constitutes the row buffer. Data is stored as a charge on the cell capacitor.
 
-\begin{figure*}[t!]
-	\center
-	\includegraphics{dram_org}
+\begin{figure*}[t]
+    \centering
+    \subfigure[DRAM hierarcy]{
+        \centering
+        \includegraphics[width=0.4\textwidth]{dram_orga}
+		\label{fig:dram_orga}
+    }
+    \subfigure[DRAM bank structure]{
+        \centering
+        \includegraphics[width=0.4\textwidth]{dram_orgb}
+		\label{fig:dram_orgb}
+    }%
 	\caption{DRAM system organization \cite{raidr}.}
 	\label{fig:dram_org}
 \end{figure*}
 
-Explain basic operations: load and store.
+To read or write to a DRAM cell the wordline connected to the targeted transistor must first be activated. When the wordline is activated, the transistor connects the capacitor to the bitline. For this to work, the bitlines has to be precharged to \(V_{DD}\)/2. When the capacitor connects to the bitline, charge will either flow from or to the capacitor depending on if the capacitor was charged or not, respectively. The sens amplifier will detect the change of voltage and drive the bitline either to \(V_{DD}\) or 0 V. Data can then be read from the bitline. If data is to be written the corresponding voltage is applied to the bitline, which stores the data in the capacitor. Finally, if another row on the bank chall be accessed the open row has to be closed, which disconnects the capacitors from the bitlines.
+
+Over time the capacitors leaks charge and the capacitor has to be recharged in order to preserve the data. The operation to recharge a row is called refresh and is performed by opening a row to let the sense amplifiers amplify the detected voltage change and thus recharge the cells to either \(V_{DD}\) or 0 V. This follows the same procedure as a read operation and thus is the row refreshed when a read is performed. 
+
+The memory controller (MC) normally issues the refresh operation, the auto-refresh command, periodically at an interval of 64 ms for each row, an interval that has been constant for the latests DRAM specifications. The interval is halved if the DRAM exeeds the specified working temprature of 85$^{\circ}$C. 
+
+The simplest approach to refresh one rank is to refresh all banks in parallel row-by-row at the start of the 64ms interval. This approch is called Burst refresh and has some downsides. The approch blocks normal accesses and form a peak of power consumption during the burst time. A better alternative is to distribute the refreshes across the interval, resulting in a lower average latency for the processor and a more stable power consumption.
+
 
 Explain different refresh modes: Burst refresh vs distributed refresh and RAS-only refresh vs CAS before RAS refresh.
 
