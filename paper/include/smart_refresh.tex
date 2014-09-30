@@ -1,0 +1,13 @@
+The basic concept behind our scheme is that a memory line that has been recently read out or written to does not need to be refreshed again by the periodic refresh mechanism.
+
+Uses a time-out counter for each memory line. The counter is set on a read/write/refresh and dicards refreshes until the timer hits zero. The counter is associated to a bank/line pair. The counters are stored in the memory controller. One counter consists of 2 SRAM bits. More bits give higher granularity and thus also better performance because the refresh is made less often.
+
+This scheme will be most effective if all lines are accessed before a refresh is needed. If no accesses are made = the entire working set fits into cache, Smart Refresh becomes CBR (CAS before RAS). Only refresh one line at a time = inefficient, so they have made it possible to turn the technique off.
+
+Implemented so only one line per each logical segments are deremented at the same time, which leads to that the refreshes are evenly distributed over time. (I.e. no burst refresh.)
+
+Overhead: 48KB for 2GB and 768 KB for 32GB = 0,0024\% overhead. 
+
+Average reduction of refreshes by 59.3\% for 2GB and 52.3\% energy saving regarding the DRAM refresh. No performance degradation.
+
+Employed its solution to 2 GB ram. What about todays sizes? How effective is the technique now? - Only works effective if large parts the memory is acccessed, i.e. large part of the memory has to be valid to begin with. Is it so today?
