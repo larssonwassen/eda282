@@ -34,8 +34,6 @@ The implementation of a DRAM refresh cycle can be made in two different ways, to
 
 When using auto-refresh (CBR), all banks in a rank are blocked for normal accesses. All banks are also blocked when ROR is used due to DRAM chip design, however some DRAM chips support per-bank refresh commands that makes it possible to only block the specific bank which is getting refreshed. 
 
-As m
-
 \begin{figure}[t]
     \centering
     \subfigure[DRAM throughput loss]{
@@ -47,11 +45,12 @@ As m
         \centering
         \includegraphics[width=0.33\textwidth]{dram_power}
         \label{fig:dram_power}
-    }%
+    }
     \caption{Projections on DRAM throughput loss and power consumption \cite{raidr}.}
     \label{fig:dram_data_proj}
 \end{figure}
 
+The trends of DRAM chips is that they become larger and larger. In practice, this is realized to a high degree by adding additional rows in the banks. The rows could instead - or also - been made longer by adding DRAM cells, but this solution is not favourable as it increases the power consumption per row access.
 
 Trends - Storage array rectangular
             cant go wider (word lines length = timing = power)
