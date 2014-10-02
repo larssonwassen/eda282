@@ -1,7 +1,9 @@
 #!/bin/bash
 cd paper/
-pdflatex main
+pdflatex -output-directory=build main
+cd build
 bibtex main
-pdflatex main
-pdflatex main
+cd ..
+pdflatex -output-directory=build main
+pdflatex -output-directory=build main
 cd ..
