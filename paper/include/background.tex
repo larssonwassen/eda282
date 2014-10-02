@@ -50,9 +50,10 @@ When using auto-refresh (CBR), all banks in a rank are blocked for normal access
     \label{fig:dram_data_proj}
 \end{figure}
 
-The trends of DRAM chips is that they become larger and larger. In practice, this is realized to a high degree by adding additional rows in the banks. The rows could instead - or also - been made longer by adding DRAM cells, but this solution is not favourable as it increases the power consumption per row access.
+\todo[inline]{Drafty stuff below}
 
-Trends - Storage array rectangular
-            cant go wider (word lines length = timing = power)
-            gets taller = more refreshes
-            over time .... projektions (see Intel)
+The trends of DRAM chips is that they become larger and larger. In practice, this is realized to a high degree by adding additional rows in the banks. The rows could instead - or also - been made longer by adding DRAM cells, but this solution is not favourable as it increases the power consumption per row access. MENTION TIMING ISSUES IF ROWS GET LONGER.
+
+When the DRAM chips become larger the throughput loss increases exponentially as \reffig{fig:dram_throughput} shows. Also when additional rows are added to the chip, more refresh commands has to be sent and of course gives this many more actual refreshes, especially if CBR is used. More refreshes means larger power consumption and is is also so that the refresh bocomes a growing portion of the total DRAM energy consumption. In \reffig{fig:dram_power} is is seen that when the device capacity reaches 64 GB the refresh power will nearly constitute half of the total consumption, an increase from 15\% if the device capacity is 8 GB. 
+
+In the next years it is projected that ... blablabla [source] so it is important and will be more important in the future to lower the total DRAM power consumption and an relatively easy way to do this is to optimizing the DRAM refresh. Next. we present a bunch of techniques that target DRAM refresh optimization.

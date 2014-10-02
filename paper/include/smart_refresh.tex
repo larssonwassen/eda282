@@ -1,3 +1,4 @@
+\todo[inline]{Make the text flow}
 The basic concept behind our scheme is that a memory line that has been recently read out or written to does not need to be refreshed again by the periodic refresh mechanism.
 
 Uses a time-out counter for each memory line. The counter is set on a read/write/refresh and dicards refreshes until the timer hits zero. The counter is associated to a bank/line pair. The counters are stored in the memory controller. One counter consists of 2 SRAM bits. More bits give higher granularity and thus also better performance because the refresh is made less often.
