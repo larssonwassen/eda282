@@ -1,0 +1,26 @@
+The program reads an matrix from a input file. It then adds padding aound the matrix to avoid need for special cases at the edges.
+
+It then loop through all red dots an averaging it with its + neigbours. it then calculates how much the average(weighted sum) have changed since last calulation for the point and adds the difference to big sum. It hen does the same for all black dots.
+
+The big sum is then divided by the amount of dots to get the global diff. If the diff is less than 0.01 it is finished and quits.
+
+
+TASK 4
+
+readLine
+	No need for change.
+
+readRemoteAction
+	M && E -> O, provides data.
+	S does nothing
+	O -> O, provides data.
+
+writeLine
+	added O to S if clause
+	(same thing happens in O as S)
+	No other modifications.
+
+writeRemoteAction
+	no Changes needed!!
+
+NOOOOO, no need for that shiet
