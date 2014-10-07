@@ -10,23 +10,17 @@ As mentioned, a DRAM access is performed in the same way as a refresh, which mak
 
 
 \subsubsection*{\textbf{Retention Time}}
-.
-
-\todo[inline]{Replace the copy-paste texts}
-Retention time refers to the period during which cells hold valid values as charge gradually leaks. Process variation [10][16] causes the retention time of DRAM cells to vary across the chip. Note that approaches that ex-ploit R information are insensitive to system workloads and global memory usage, which makes them attractive omponents for a refresh-optimized memory subsystem.
+The need for refresh is as mentioned caused by leakage in the memory cells. Retention time is a measurement of the time it takes before a cell loose its data if not refreshed (recharged). Variations in the manufacturing process causes fluctuation in the retention time of the DRAM cells on the same chip. To acomodate for the cells with the lowest retention time manufaturers produce chips with average retention times much higher than possible minimum. This gives room for optimications using variable refresh rate for different cells. The retention time is also highly sensitive to temperature variations and becomes drastically lower at higher temperatures. For techniques using this aproach the biggest advatage is that the impovments are independent of workload, except for the potential rise in temperature.   
 
 \subsubsection*{\textbf{Data Tolerance}}
-.
+In the most aproaches all data loss is seen as intolerable. In this aproach data is categorised depending on how critical it is and e.g. aproximate computations, games, or media processing can tollerate some bit errors while still producing a acceptable result. This yields that cells containing data from such applications may be refreshed more seldom. Using this aproach the energy and performance savings achieved is highly depending on what kind of applications is most commonly run on the system.
 
-\todo[inline]{Replace the copy-paste texts}
-Applications like games, media processing, machine learning, and unstructured information analysis tolerate errors in portions of their data and still produce acceptably accurate results. Approximate computation [31, 8] exploits this approximate data to realize tradeoffs among performance, energy, and accuracy. Cells containing such error-tolerant T data need not be refreshed as often as those containing critical data. How many cells fall into this category depends on application characteristics.
+% Applications like games, media processing, machine learning, and unstructured information analysis tolerate errors in portions of their data and still produce acceptably accurate results. Approximate computation [31, 8] exploits this approximate data to realize tradeoffs among performance, energy, and accuracy. Cells containing such error-tolerant T data need not be refreshed as often as those containing critical data. How many cells fall into this category depends on application characteristics.
 
 \subsubsection*{\textbf{Validity}}
-.
+In a system that does not uitilze all the availible memory space it is unnesessary to refresh parts not used. Therefore, cells containing data that are not valid does not need to be refreshed. This aproach is highly sensitive to memory uitilization of the system and its efects on energy consumption and performance improvments will be diminishing on systems with high workload.  
 
-\todo[inline]{Replace the copy-paste texts}
-If the OS has not allocated the page frame, its data are meaningless, and refreshes to it are wasteful. Severa
-l software approaches thus attempt to trigger refreshes only for rows with valid data. The effectiveness of schemes using such V refresh information is sensitive to the total memory usage of the system.
+%If the OS has not allocated the page frame, its data are meaningless, and refreshes to it are wasteful. Several software approaches thus attempt to trigger refreshes only for rows with valid data. The effectiveness of schemes using such V refresh information is sensitive to the total memory usage of the system.
 
 \subsection{Techniquies to reducing refresh power}
 
