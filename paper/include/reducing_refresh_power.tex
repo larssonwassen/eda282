@@ -1,7 +1,7 @@
 \section{Reducing refresh power} 
 \label{sec:red}
-\todo[inline]{Do an intro that includes a roadmap, mention the refresh scheduling approach that schedules real acces togheter with refresh ops. Make an intro to ARTV (somewhat done) }
-There are several methods that can be applied to decrease the refresh rate and these can be categorized depending on with sort of information the scheduling decisions are based upon. The four sort of information are: access recency, cell retention times, error tolerance of the data, and line validity. This categorization follows the taxonamy proposed by authors \cite{dtail}. 
+\todo[inline]{Do an intro that includes a road map, mention the refresh scheduling approach that schedules real access together with refresh ops. Make an intro to ARTV (somewhat done) }
+There are several methods that can be applied to decrease the refresh rate and these can be categorized depending on with sort of information the scheduling decisions are based upon. The four sort of information are: access recency, cell retention times, error tolerance of the data, and line validity. This categorization follows the taxonomy proposed by authors \cite{dtail}. 
 
 \subsection{Approaches to reduce refresh power}
 
@@ -10,21 +10,21 @@ As mentioned, a DRAM access is performed in the same way as a refresh, which mak
 
 
 \subsubsection*{\textbf{Retention Time}}
-The need for refresh is as mentioned caused by leakage in the memory cells. Retention time is a measurement of the time it takes before a cell loose its data if not refreshed (recharged). Variations in the manufacturing process causes fluctuation in the retention time of the DRAM cells on the same chip. To acomodate for the cells with the lowest retention time manufaturers produce chips with average retention times much higher than possible minimum. This gives room for optimications using variable refresh rate for different cells. The retention time is also highly sensitive to temperature variations and becomes drastically lower at higher temperatures. For techniques using this aproach the biggest advatage is that the impovments are independent of workload, except for the potential rise in temperature.   
+The need for refresh is as mentioned caused by leakage in the memory cells. Retention time is a measurement of the time it takes before a cell loose its data if not refreshed (recharged). Variations in the manufacturing process causes fluctuation in the retention time of the DRAM cells on the same chip. To accommodate for the cells with the lowest retention time manufacturers produce chips with average retention times much higher than possible minimum. This gives room for optimization using variable refresh rate for different cells. The retention time is also highly sensitive to temperature variations and becomes drastically lower at higher temperatures. For techniques using this approach the biggest advantage is that the improvements are independent of workload, except for the potential rise in temperature.   
 
 %Retention time refers to the period during which cells hold valid values as charge gradually leaks. Process variation [10][16] causes the retention time of DRAM cells to vary across the chip. Note that approaches that ex-ploit R information are insensitive to system workloads and global memory usage, which makes them attractive omponents for a refresh-optimized memory subsystem.
 
 \subsubsection*{\textbf{Data Tolerance}}
-In the most aproaches all data loss is seen as intolerable. In this aproach data is categorised depending on how critical it is and e.g. aproximate computations, games, or media processing can tollerate some bit errors while still producing a acceptable result. This yields that cells containing data from such applications may be refreshed more seldom. Using this aproach the energy and performance savings achieved is highly depending on what kind of applications is most commonly run on the system.
+In the most approaches all data loss is seen as intolerable. In this approach data is categorized depending on how critical it is and e.g. approximate computations, games, or media processing can tolerate some bit errors while still producing a acceptable result. This yields that cells containing data from such applications may be refreshed more seldom. Using this approach the energy and performance savings achieved is highly depending on what kind of applications is most commonly run on the system.
 
 % Applications like games, media processing, machine learning, and unstructured information analysis tolerate errors in portions of their data and still produce acceptably accurate results. Approximate computation [31, 8] exploits this approximate data to realize tradeoffs among performance, energy, and accuracy. Cells containing such error-tolerant T data need not be refreshed as often as those containing critical data. How many cells fall into this category depends on application characteristics.
 
 \subsubsection*{\textbf{Validity}}
-In a system that does not uitilze all the availible memory space it is unnesessary to refresh parts not used. Therefore, cells containing data that are not valid does not need to be refreshed. This aproach is highly sensitive to memory uitilization of the system and its efects on energy consumption and performance improvments will be diminishing on systems with high workload.  
+In a system that does not utilize all the available memory space it is unnecessary to refresh parts not used. Therefore, cells containing data that are not valid does not need to be refreshed. This approach is highly sensitive to memory utilization of the system and its effects on energy consumption and performance improvements will be diminishing on systems with high workload.  
 
 %If the OS has not allocated the page frame, its data are meaningless, and refreshes to it are wasteful. Several software approaches thus attempt to trigger refreshes only for rows with valid data. The effectiveness of schemes using such V refresh information is sensitive to the total memory usage of the system.
 
-\subsection{Techniquies to reducing refresh power}
+\subsection{Techniques to reducing refresh power}
 
 
 \subsubsection*{\textbf{Smart Refresh}}
