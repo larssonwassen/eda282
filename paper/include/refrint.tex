@@ -1,6 +1,8 @@
-.
+This technique is proposed by A. Agrawal et al. \cite{refrint} and is based on Access Recency. It is targeted towards caches and eDRAM and thus can not be directly compared with the other solutions, but the main concept is of good use and the technique could be implemented DRAM as well. The concept is based on two types of unnecessary refreshes which originates from so called cold and hot rows. Cold rows are those used far apart in time or not used at all. The technique identifies and refreshes only those rows which are expected to be accessed in the near future, the rows that are used less frequent is flushed and invalidated. Hot rows consists of the rows that gets accessed frequently and thus can the technique postpone the preceding refresh to the accessed rows.
 
-\todo[inline]{Crunch the text!}
+For the hot lines, an approach similar to Smart Refresh is employed. The differences are that Refrint does not maintain a counter for each row, but a snapshot of a global counter. 
+
+\todo[inline]{Crunchable text below!}
 
 Tageted towards caches and eDRAM.
 
