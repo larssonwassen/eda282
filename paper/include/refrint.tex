@@ -6,13 +6,7 @@ Four different policies can be applied for the cold rows, where the policies dec
 
 \todo[inline]{Drafty text below!}
 
-Depending on the application's memory footprint and cache visibility, the program can be categorized to maximize the gain of the technique. Visibility means that the In \reffig{fig:app_cat} three categories are displayed. Explain the categories.
-
-\begin{figure}[t!]
-	\includegraphics[width=\textwidth/2]{app_cat}
-	\caption{Application categorization according to the cold row's policies \cite{refrint}.}
-	\label{fig:app_cat}
-\end{figure}
+Depending on the application's memory footprint and cache visibility the program is categorized to maximize the gain of the cold row's policies. Visibility correspond to the amount of row accesses made by the application. If the application has high visibility \textit{WB} is used, and if the visibility is low \textit{Valid} is used. %In turn, if the visibility is high and the footprint small  with small \textit{n} and \textit{m}. 
 
 The technique modifies the MC. Which modifications and how large overhead? 5 bit snapshot for each row + state and n+m counters. some logic as well.
 
