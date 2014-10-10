@@ -10,7 +10,7 @@ function makePaper {
 	pdflatex -output-directory=build main
 	pdflatex -output-directory=build main
 	cd ..
-	mv paper/build/main.pdf ./paper.pdf
+	cp paper/build/main.pdf ./paper.pdf
 }
 
 function makeLab {
@@ -19,7 +19,7 @@ function makeLab {
 	pdflatex -output-directory=build main
 	pdflatex -output-directory=build main
 	cd ../..
-	mv lab/report/build/main.pdf ./labreport.pdf
+	cp lab/report/build/main.pdf ./labreport.pdf
 }
 
 function quit {
