@@ -41,45 +41,32 @@ int main(int argc, char **argv)
 }
 
 
-void Solve(double **A)
-{
+void Solve(double **A) {
     int i, j, done = 0;
-    double temp;
-	double diff;
-
+    double temp, diff;
     #pragma omp parallel default(shared) private(i, j, temp)    
     while(!done){
-
    	 	#pragma omp single
 		diff = 0;
-
-		/* sweep that updates red elements */
 		#pragma omp for  schedule(static) reduction(+:diff)
-		for(i=1; i<=n; ++i){
-		    for(j=i%2 ? 1:2; j<=n; j=j+2){
+		for(i=1; i<=n; ++i) {
+		    for(j=i%2 ? 1:2; j<=n; j=j+2) {
 				temp = A[i][j];
 				A[i][j] = 0.2 * (A[i][j] + A[i][j-1] + A[i-1][j] + A[i][j+1] + A[i+1][j]);
 				diff += abs(A[i][j] - temp);
 		    }
 		}
-
-		/* sweep that updates black elements */
 		#pragma omp for schedule(static) reduction(+:diff)
-		for(i=1; i<=n; ++i){
-		    for(j=i%2 ? 2:1; j<=n; j=j+2){
+		for(i=1; i<=n; ++i) {
+		    for(j=i%2 ? 2:1; j<=n; j=j+2) {
 				temp = A[i][j];
 				A[i][j] = 0.2 * (A[i][j] + A[i][j-1] + A[i-1][j] + A[i][j+1] + A[i+1][j]);
 				diff += abs(A[i][j] - temp);
 		    }
 		}
-
-		#pragma omp single
-		{
+		#pragma omp single {
 			if(diff / (n*n) < 0.01)
 			    done = 1;
-
-			//printf("%.4lf\n", diff);
-			//printf("%lu\n", sizeof(double *));
     	}
     }
 }

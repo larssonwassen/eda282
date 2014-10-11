@@ -1,12 +1,19 @@
 \section{Lab 2}
 \label{sec:lab2}
+OpenMP (Open \textbf Multi-\textbf Processing)
 \todo[inline]{Introduction, one paragraph}
 
 \subsection{Task 1}
 \todo[inline]{Analyze the source code of the benchmark and provide a detailed description of how it works. Comment on the prominent communication patterns in the benchmark.}
 
+The program reads a matrix on the form $n \times n, n \in [4,8,25,100,200]$ containing data points from a file. To make the program simpler and avoid special cases a padding is added to the matrix changing its dimensions to $(n+2) \times (n+2)$. Then every other data point, here by called red dots, is looped through. For every red dot an average of itself and its neighbors to the west, south, north, and east is calculated and written as the dots new value. For all the other data points, called black dots, the same thing is performed. The difference of the dots new and old value is added together and the process is repeated until this accumulated difference of averages is smaller than 0.01. After the program finishes its execution the matrix have converged to an average of all red and black dots.
+
 \subsection{Task 2}
 \todo[inline]{Explain our parallel version}
+In listing~\ref{lst:solve} a parallelized version of the function \texttt{void Solve(double **A)} are shown. The parallelization have been done using directives from the OpenMP API. Only this function is shown as the other parts of the program for reading the input file and printing to the console is not included in the performance analysis. The approach taken for making the function execute in parallel is to distribute all the lines of the matrix evenly between all threads. 
+
+\lstinputlisting[caption={\textit{Parallel version of original} \texttt{void Solve(double **A)}}, label={lst:solve}]{include/solve.c}
+
 
 \subsection{Task 3}
 \todo[inline]{
@@ -17,4 +24,4 @@ Evaluate MSI, MESI, and MESI+migratory in the context of this benchmark. Perform
 \todo[inline]{
 Outline a strategy to modify the MESI protocol to support the O state.
 Analyze the MESI\_SMPCache.cpp source to understand how the MESI protocol is currently modeled.
-Discuss changes that need to be made to the readLine, writeLine, readRemoteAction, and writeRemoteAction functions. Show the necessary changes in pseudocode. Should the code that tracks cache access statistics be modified? If so, how?}
+Discuss changes that need to be made to the readLine, writeLine, readRemoteAction, and writeRemoteAction functions. Show the necessary changes in pseducode. Should the code that tracks cache access statistics be modified? If so, how?}
