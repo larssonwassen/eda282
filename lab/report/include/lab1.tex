@@ -1,13 +1,24 @@
 \section{Lab 1}
 \label{sec:lab1}
-\todo[inline]{Introduction, one paragraph}
-In this laboratory assignment, we evaluate overheads in cache coherence protocols using microbenchmarks. ...
+\todo[inline]{little drafty}
+In this laboratory assignment, we evaluate overheads in cache coherence protocols using microbenchmarks. Three diverse benchmarks, described in \ref{sec:lab11}, are used to compare the coherence protocols. In \ref{sec:lab12}, MSI and MESI is compared and in \ref{sec:lab13}, MESI and MESI-MG is compared.
 
+\todo[inline]{Add working size set}
 
 \subsection{Task 1}
-\todo[inline]{Explain the benchmarks}
+\label{sec:lab11}
+Three different microbenchmarks are used with various prominent communication patterns. Here follows a description of each benchmark.
+\subsubsection*{Benchmark 1 - Producer consumer}
+In this benchmark, one thread increments the values in a memory array, whereas the other threads read these values and accumulate the read values in a private variable. However, it is not ensured that the incrementing thread increments the values before the other threads reads, and thus can this happen in any order. The memory accesses is done in mutual exclusion using a lock, and before a new lap of increments \& reads there is a barrier.
+
+\subsubsection*{Benchmark 2 - No sharing}
+The memory array is divided up equally among the threads and a thread only increments the values in it's assigned array elements, thus is the memory array not shared. A barrier is placed before a new incrementation lap of the assigned array elements begins. 
+
+\subsubsection*{Benchmark 3 - All shared}
+All threads increments every element in the memory array.
 
 \subsection{Task 2}
+\label{sec:lab12}
 \todo[inline]{
 Compare MSI and MESI.
 When is having the E state beneficial (over baseline MSI)?
@@ -16,6 +27,7 @@ How does the behavior change when the dataset size changes?}
 
 
 \subsection{Task 3}
+\label{sec:lab13}
 \todo[inline]{
 Compare MESI and MESI+migratory.
 Why is one better than the other?
