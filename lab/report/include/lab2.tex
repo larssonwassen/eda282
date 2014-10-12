@@ -10,23 +10,21 @@ The distribution of the red and black dots forms a chess pattern. This means tha
 \subsection{Task 2}
 In listing~\ref{lst:solve} a parallelized version of the function \texttt{void Solve(double **A)} are shown. The parallelization have been done using directives from the OpenMP API. Only this function is shown as the other parts of the program for reading the input file and printing to the console is not included in the performance analysis. The approach taken for making the function execute in parallel is to distribute the lines of the matrix evenly between all threads. This is done twice, once for the red dots and once for the black. Only one thread resets \texttt{diff} to zero on line 5 and test whether the program is finished or not on line 25. At each for loop that goes through the red and black dots the directive \texttt{reduction(+:diff)} is used which causes each thread to have its own private version of \texttt{diff} that all gets added together after the for loop.
 
-\centerline{
-\begin{minipage}{1.0\textwidth}
-\lstinputlisting[caption={\textit{Parallel version of original} \texttt{void Solve(double **A).}}, label={lst:solve}]{include/solve.c}
-\end{minipage}
-}
+
 \subsection{Task 3}
 \todo[inline]{
 Evaluate MSI, MESI, and MESI+migratory in the context of this benchmark. Perform a detailed characterization of the benchmark using different protocols. Discuss how the behavior changes when the working set size is modified. Show how execution time relates to the cache access statistics.}
 
+In \reffig{fig:lab2} the results from running the parallelized version of the program in the simulator with the different CCP:s and three different matrix dimensions.
 
+DRAFTY:
+MESI gains on MSI with big working sets as the working set does not fit in the cache and in MSI every readMiss will fetch the line into Shared state and then move to modified causing a invalidate to be sent. In MESI this is skipped as the readMiss will fetch the line into Exclusive state and then Modified not causing any invalidates to be sent.
 
-Samma mönster som i Lab 1, MSI får mer writemiss osv än MESI vilket gör MESI lite bättre.
 \begin{figure}[t]
 	\center
 	\includegraphics[width=0.8\textwidth]{lab2bars}
 	\caption{Results from simulation of the parallelized benchmark for all cache coherence protocols combined with different working sets.}
-	\label{fig:resultslab1}
+	\label{fig:lab2}
 \end{figure}
 
 \subsection{Task 4}
