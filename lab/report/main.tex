@@ -1,9 +1,12 @@
 \documentclass[a4paper]{article}
 
+\usepackage[margin=2cm]{geometry}
 \include{packages}
 \usepackage{color}
 %MACROS---
 \newcommand{\reffig}[1]{Fig. \ref{#1}}
+\newcommand\xput[2][0.5]{%
+    \rule{#1\linewidth}{0pt}\makebox[0pt][c]{#2}\hfill}
 
 \title{Report on Lab 1 \& Lab 2 in EDA282, Parallel Computer Organization and Design}
 \date{October 2014}
@@ -20,7 +23,7 @@ Email: \{larsdan, jhemlin\}@student.chalmers.se}
 \lstset{ 
 	language=C,
 	backgroundcolor=\color{white},
-	basicstyle=\tiny,        % the size of the fonts that are used for the code
+	basicstyle=\scriptsize,        % the size of the fonts that are used for the code
 	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
 	breaklines=true,                 % sets automatic line breaking
 	captionpos=t,                    % sets the caption-position to bottom
