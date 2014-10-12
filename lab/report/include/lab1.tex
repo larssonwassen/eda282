@@ -1,30 +1,32 @@
 \section{Lab 1}
 \label{sec:lab1}
-\todo[inline]{little drafty}
-In this laboratory assignment, we evaluate overheads in cache coherence protocols using microbenchmarks. Three diverse benchmarks, described in \ref{sec:lab11}, are used to compare the coherence protocols. In \ref{sec:lab12}, MSI and MESI is compared and in \ref{sec:lab13}, MESI and MESI-MG is compared.
-
-\todo[inline]{Add working size set}
+In this laboratory assignment, we evaluate overheads in cache coherence protocols using microbenchmarks. Three diverse benchmarks, described in section \ref{sec:lab11}, are used to compare the coherence protocols. In section \ref{sec:lab12}, MSI and MESI is compared and in section \ref{sec:lab13}, MESI and MESI-MG is compared. In each comparison, we use three working set: the first is smaller than an private L1 cache (512 counters), the second is larger than an private L1 cache and smaller than the LLC (1536 counters), and the last is larger than the LLC (98304 counters). The counters are stored in an array, the counter array, which is accessed by the benchmark.
 
 \subsection{Task 1}
 \label{sec:lab11}
-Three different microbenchmarks are used with various prominent communication patterns. Here follows a description of each benchmark.
+Three different microbenchmarks with disgustingly various communication patterns are used in the simulations and here follow a description of each benchmark.
 \subsubsection*{Benchmark 1 - Producer consumer}
-In this benchmark, one thread increments the values in a memory array, whereas the other threads read these values and accumulate the read values in a private variable. However, it is not ensured that the incrementing thread increments the values before the other threads reads, and thus can this happen in any order. The memory accesses is done in mutual exclusion using a lock, and before a new lap of increments \& reads there is a barrier.
+In this benchmark, one thread increments the values in the counter array, whereas the other threads read these values and accumulate the read values in a private variable. However, it is not ensured that the incrementing thread increments the values before the other threads reads, and thus can this happen in any order. The counter accesses is done in mutual exclusion using a lock, and before a new lap of increments \& reads there is a barrier.
 
 \subsubsection*{Benchmark 2 - No sharing}
-The memory array is divided up equally among the threads and a thread only increments the values in it's assigned array elements, thus is the memory array not shared. A barrier is placed before a new incrementation lap of the assigned array elements begins. 
+This benchmark have no sharing of the counter array. The counter array is divided up equally among the threads and a thread only increments the values in it's assigned array elements. A barrier is placed before a new incrementation lap of the assigned array elements begins. 
 
 \subsubsection*{Benchmark 3 - All shared}
-All threads increments every element in the memory array.
+In this benchmark, the counter array is shared among all threads. Each thread increments every element in the counter array while in mutual exclusion. A lock is used to provide mutual exclusion and a barrier is placed after all threads have incremented. 
 
 \subsection{Task 2}
 \label{sec:lab12}
-\todo[inline]{
-Compare MSI and MESI.
-When is having the E state beneficial (over baseline MSI)?
-How does the behavior change when the dataset size changes?}
+Here the CCPs MSI and MESI are compared using benchmarks 1 and 2. The difference between the CCPs is that MESI includes an exclusive (E) state, which is beneficial if data is read exclusively by one processor. If the data is then read by another processor, a move to the shared (S) state is made without cost. I.e. MESI can only produce equal or better results than MSI.
+
+In the producer consumer benchmark, the reading threads transition the data element to the E state when accessing the array for the first time if the writing thread have not accessed it already. However, the whole counter array is shared and thus will not the E state be of any gain. Therefore, MSI and MESI performs equally regardless of working set size, which is shown in \reffig{fig:resultslab1}.
 
 
+\begin{figure}[t]
+	\center
+	\includegraphics[width=0.7\textwidth]{bars}
+	\caption{Simulation results using various cache coherent protocols combined with different working sets and benchmarks.}
+	\label{fig:resultslab1}
+\end{figure}
 
 \subsection{Task 3}
 \label{sec:lab13}
