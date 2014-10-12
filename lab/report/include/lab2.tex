@@ -8,7 +8,6 @@ The program reads a matrix on the form $n \times n, n \in [4,8,25,100,200]$ cont
 The distribution of the red and black dots forms a chess pattern. This means that when we calculate the average for a dot and its neighbors, all the neighbors are of the other color. As such, when going through for example the red dots there is no need to invalidate any other dots because the black dots are only read and you are the only one accessing your red dot.
 
 \subsection{Task 2}
-\todo[inline]{Explain our parallel version}
 In listing~\ref{lst:solve} a parallelized version of the function \texttt{void Solve(double **A)} are shown. The parallelization have been done using directives from the OpenMP API. Only this function is shown as the other parts of the program for reading the input file and printing to the console is not included in the performance analysis. The approach taken for making the function execute in parallel is to distribute the lines of the matrix evenly between all threads. This is done twice, once for the red dots and once for the black. Only one thread resets \texttt{diff} to zero on line 5 and test whether the program is finished or not on line 25. At each for loop that goes through the red and black dots the directive \texttt{reduction(+:diff)} is used which causes each thread to have its own private version of \texttt{diff} that all gets added together after the for loop.
 
 \centerline{
@@ -20,6 +19,15 @@ In listing~\ref{lst:solve} a parallelized version of the function \texttt{void S
 \todo[inline]{
 Evaluate MSI, MESI, and MESI+migratory in the context of this benchmark. Perform a detailed characterization of the benchmark using different protocols. Discuss how the behavior changes when the working set size is modified. Show how execution time relates to the cache access statistics.}
 
+
+
+Samma mönster som i Lab 1, MSI får mer writemiss osv än MESI vilket gör MESI lite bättre.
+\begin{figure}[t]
+	\center
+	\includegraphics[width=0.8\textwidth]{lab2bars}
+	\caption{Results from simulation of the parallelized benchmark for all cache coherence protocols combined with different working sets.}
+	\label{fig:resultslab1}
+\end{figure}
 
 \subsection{Task 4}
 \todo[inline]{
