@@ -64,7 +64,8 @@ void Solve(double **A) {
 				diff += abs(A[i][j] - temp);
 		    }
 		}
-		#pragma omp single {
+		#pragma omp single 
+        {
 			if(diff / (n*n) < 0.01)
 			    done = 1;
     	}
