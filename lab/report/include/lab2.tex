@@ -26,7 +26,6 @@ Changing to MESI-MG yields a huge performance degradation of 420\%, 394\%, and 4
 \end{figure}
 
 \subsection{Task 4}
-\todo[inline]{
-Outline a strategy to modify the MESI protocol to support the O state.
-Analyze the MESI\_SMPCache.cpp source to understand how the MESI protocol is currently modeled.
-Discuss changes that need to be made to the readLine, writeLine, readRemoteAction, and writeRemoteAction functions. Show the necessary changes in pseducode. Should the code that tracks cache access statistics be modified? If so, how?}
+%\todo[inline]{Outline a strategy to modify the MESI protocol to support the O state. Analyze the MESI\_SMPCache.cpp source to understand how the MESI protocol is currently modeled. Discuss changes that need to be made to the readLine, writeLine, readRemoteAction, and writeRemoteAction functions. Show the necessary changes in pseducode. Should the code that tracks cache access statistics be modified? If so, how?}
+
+To add the Owner (O) state to the existing MESI CCP only some small changes are needed. In \textit{readLine()} and \textit{remoteWriteAction()} no changes are needed. Turning to \textit{readRemoteAction()}, transitions from the E, M, and O states to the O state are added, and all of these transitions provide data to the calling cache. The action taken when in the shared state is removed. For the \textit{writeLine()} the only change needed is to take the same actions when in the O state as in the S state. For the cache access statistics there is no need to change anything

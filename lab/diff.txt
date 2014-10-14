@@ -1,0 +1,34 @@
+72c72
+<       if(otherState->getState() == MESI_MODIFIED){
+---
+>       if(otherState->getState() == MESI_MODIFIED || otherState->getState() == MESI_EXCLUSIVE){
+74c74
+<         otherState->changeStateTo(MESI_SHARED);
+---
+>         otherState->changeStateTo(MESI_OWNER);     /*   #####        CHANGEED      ####*/
+77,84c77,83
+<       }else if(otherState->getState() == MESI_EXCLUSIVE){
+< 
+<         otherState->changeStateTo(MESI_SHARED); 
+<         return MESI_SMPCache::RemoteReadService(false,true);
+< 
+<       }else if(otherState->getState() == MESI_SHARED){  //doesn't matter except that someone's got it
+< 
+<         return MESI_SMPCache::RemoteReadService(true,true);
+---
+>       }
+>       else if (otherState->getState() == MESI_OWNER) { 
+>         
+>         return MESI_SMPCache::RemoteReadService(true,true);        
+>       
+>       }
+>       else if(otherState->getState() == MESI_SHARED){  //doesn't matter except that someone's got it
+86c85,86
+<       }else if(otherState->getState() == MESI_INVALID){ //doesn't matter at all.
+---
+>       }
+>       else if(otherState->getState() == MESI_INVALID){ //doesn't matter at all.
+210c210
+<   }else if(st->getState() == MESI_SHARED){ //Coherence Miss
+---
+>   }else if(st->getState() == MESI_SHARED || st->getState() == MESI_OWNER){ //Coherence Miss
