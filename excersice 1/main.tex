@@ -1,0 +1,133 @@
+\documentclass[a4paper]{article}
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\lhead{Chalmers - EDA282}
+\chead{Excercise 1}
+\rhead{Dan Larsson}
+\lfoot{November 2014}
+
+
+\begin{document}
+
+\section*{Q1}
+\begin{enumerate}
+\item % a
+The goal of the algorithm in Listing 1 is to group n points into m clusters. This is done by invoking the function \texttt{kernel} until its return value \texttt{delta} is equal to 0. In \texttt{kernel} all points are itterated over to find which one of the m clusters supplied in \texttt{clusters} is closest. To find the closest cluster all clusters are itterated over in \texttt{find\_nearest\_point} and the Euclidean distance is calulated in \texttt{euclid\_dist\_2}. When all clusters have been itterated over the index of the cloest one is returned to \texttt{kernel}. This index is used to check if the point already belongs to this cluster, if not delta is increased to indicate that a point have changed cluster. To calulate the center of each cluster an average of the cooridnates for all points belonging to the cluster are calulated. 
+
+\item % b
+\label{itm:b}
+One way to parallelize the \texttt{kernel} would be to simply divide all points into p parts, where p is the amount of processors. For this to work the variables \texttt{new\_centers} and \texttt{new\_centers\_len} would need to be syncronized. This can be done using the \texttt{parallel for} and \texttt{critical} directive of \texttt{OpenMP}. 
+
+\item % c
+\label{itm:c}
+As mentioned in (b), there would be a need for synchronization of the variables \texttt{new\_centers} and \texttt{new\_centers\_len}. For the other global variables, \texttt{clusters} and \texttt{feature} are only read and \texttt{membership} is only accessed based on the index of each point and as the different processors have no overlapping points there will accesses to the same addresses. In listing~\ref{lst:kernelcoarse} a modified kernel with \texttt{OpenMP} directives for a coarse grained aproach is shown.
+
+\item % d
+A more fine grained solution than the one presented in (c) is shown in listing~\ref{lst:kernelfine} where the \texttt{atomic} directive is used on each of the critical varaibles. As explained in (c) only \texttt{new\_centers} and \texttt{new\_centers\_len} need this protection so two locks is enough.
+
+
+\end{enumerate}
+\lstset{language=C,frame=single}
+\lstinputlisting[lastline=31, caption={Modified kernel coarse grained},label={lst:kernelcoarse}]{upgC.c}
+\lstinputlisting[firstline=32, caption={Modified kernel fine grained},label={lst:kernelfine}]{upgC.c}
+
+\section*{Q2}
+The request write/read sequence will be as follows: \\
+
+\texttt{W0~W1~R0~R1~W2~W3~R2~R3~W4~W5~R4~R5~W6~W7~R6~R7} \\ \\
+and the values that the 8 processors will read will be the following:\\
+
+\begin{tabular}{ l | c c c c c c c c }
+
+\textbf{Processor} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+\textbf{Read}     & 1 & 1 & 3 & 3 & 5 & 5 & 7 & 7 \\
+
+\end{tabular}
+
+\section*{Q3}
+\begin{enumerate}
+\item % a 
+\label{itm:3a}
+The amount of cycles will be the following for MSI:
+\texttt{
+  \\Proc1: LvL2Rd + (LvL1RdX + BusUP + Wr) + Wr
+  \\Proc2: LvL2Rd + (LvL1RdX + BusUP + Wr) + Wr
+  \\Proc3: LvL2Rd + (LvL1RdX + BusUP + Wr) + Wr
+  \\Proc4: LvL2Rd + (LvL1RdX + BusUP + Wr) + Wr 
+}
+\[4\times(40+(20+10+1)+1) = 288\]
+and for MESI:
+\texttt{
+  \\Proc1: LvL2Rd + Wr + Wr
+  \\Proc2: LvL2Rd + (LvL1RdX + BusUP + Wr) + Wr
+  \\Proc3: LvL2Rd + (LvL1RdX + BusUP + Wr) + Wr
+  \\Proc4: LvL2Rd + (LvL1RdX + BusUP + Wr) + Wr 
+}
+\[(40+1+1)+3\times(40+(20+10+1)+1) = 258\]
+where the difference is due to the first processor going to the E state instead of the S state and thereby saves 30 cycles when it then wants to write. There are no Snoops done as we only care about the cycles wasted in the current cache.
+
+\item % b 
+The amount of trafic that gets generated for MSI based on the sequences in (a)):
+\[4\times(38B+38B+10B) = 344B\]
+and for MESI:
+\[38B+3\times(38B+38B+10B) = 296B\]
+\end{enumerate}
+
+\section*{Q4} % 7.2
+\begin{enumerate}
+\item % a
+There is no need to protect the read as if the read returns the wrong value, it will be a lower value than it should and the read can simply be done again.
+\item % b 
+See listing~\ref{lst:q3b}.
+
+\item % c
+See listing~\ref{lst:q3c}.
+\end{enumerate}
+
+\lstset{language={[x86masm]Assembler},frame=single}
+\lstinputlisting[firstline=20, lastline=33, caption={Sync. using T\&S},label={lst:q3b}]{upgASM.asm}
+\lstinputlisting[firstline=37, lastline=43, caption={Sync. using F\&A},label={lst:q3c}]{upgASM.asm}
+
+\section*{Q5} % 7.3
+\begin{enumerate}
+\item % a
+See listing~\ref{lst:q4a}.
+\setcounter{enumi}{3}
+\item % d
+See listing~\ref{lst:q4e}.
+\item % e
+See listing~\ref{lst:q4d}.
+\end{enumerate}
+
+
+\lstset{language={[x86masm]Assembler},frame=single}
+\lstinputlisting[firstline=0, lastline=4, caption={F\&ADD X, Rx, a},label={lst:q4a}]{upgASM.asm}
+
+\lstinputlisting[firstline=6, lastline=10, caption={SWAP(Rx, X)},label={lst:q4e}]{upgASM.asm}
+
+\lstinputlisting[firstline=12, lastline=18, caption={CAS Rx, Ry, X},label={lst:q4d}]{upgASM.asm}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
