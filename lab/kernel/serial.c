@@ -33,8 +33,8 @@ int main(int argc, char **argv)
     omp_set_num_threads(2);
 
     //kernel call
-    Solve(A);
-
+   // Solve(A);
+    printf("size of int is: %lu\n", sizeof(double));
     //print(A);
 
     return 0;
