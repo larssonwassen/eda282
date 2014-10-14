@@ -1,17 +1,34 @@
+\newpage
 \section{Parallelized program for Lab 2}
 \centerline{
 \begin{minipage}{1.0\textwidth}
 \lstinputlisting[caption={\textit{Parallel version of original} \texttt{void Solve(double **A).}}, label={lst:solve}]{include/solve.c}
 \end{minipage}
 }
-
 \section{Data tables for Lab 2}
+\begin{table}[h]
+	\caption{\label{tbl:lab2}Results from simulation of program for Lab 2 with various Cache Coherance Protocols and working sets.}
+    \begin{adjustwidth}{-2cm}{-2cm}  
+        \begin{center}
 
-\centerline{\begin{minipage}{1.0\textwidth}
-
-\begin{tabular}[h]{c c c c c c c c c }
-
-
-\end{tabular}
-
-\end{minipage}}
+			\begin{tabular}{| c | r r r | r r r | r r r|}
+				& \multicolumn{3}{c|}{\textbf{MESI-MG}} & \multicolumn{3}{c|}{\textbf{MESI}} & \multicolumn{3}{c|}{\textbf{MSI}} \\
+				\hline
+				&\textit{25}&\textit{100}&\textit{200}&\textit{25}&\textit{100}&\textit{200}&\textit{25}&\textit{100}&\textit{200}\\
+				\hline
+				\textit{ReadHits} & 538740 & 6571804 & 24385347 & 658704 & 7441826 & 27888263 & 655352 & 7438765 & 27890073 \\
+				\textit{ReadMisses} & 119329 & 879164 & 3520089 & 3477 & 7939 & 15904 & 3410 & 7818 & 15832 \\ 
+				\textit{ReadMissesServicedByShared} & 0 & 0 & 0 & 1397 & 1202 & 1034 & 1393 & 1123 & 1218 \\ 
+				\textit{ReadMissesServicedByModified} & 119290 & 878324 & 3515605 & 2043 & 5908 & 10374 & 1977 & 5765 & 10219 \\ 
+				\textit{WriteHits} & 42390 & 428135 & 1587158 & 39958 & 421004 & 1576131 & 39299 & 419416 & 1571286 \\ 
+				\textit{WriteMisses} & 236 & 244 & 234 & 2067 & 5892 & 10246 & 2086 & 6655 & 14382 \\ 
+				\textit{WriteOnSharedMisses} & 0 & 0 & 0 & 1881 & 5693 & 10075 & 1920 & 6517 & 14244 \\ 
+				\textit{InvalidatesSent} & 95 & 103 & 94 & 1939 & 5751 & 10132 & 1971 & 6565 & 14294 \\ 
+				\textit{LLCMisses} & 3407 & 5111 & 8948 & 3395 & 5111 & 8921 & 3382 & 5058 & 8896 \\ 
+				\textit{LLCHits} & 796 & 2171 & 8803 & 2353 & 3490 & 9989 & 2367 & 3539 & 10027 \\
+				\hline
+				
+			\end{tabular}
+		\end{center}
+	\end{adjustwidth}
+\end{table}
