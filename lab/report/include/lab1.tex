@@ -35,3 +35,4 @@ In the no sharing benchmark the first read access to every element end in state 
 Compare MESI and MESI+migratory.
 Why is one better than the other?
 How does the behavior change when the dataset size changes?}
+MESI-MG is a modified version of MESI where the S state is not utilized. If a cache reads a data element it will be forwarded from a remote private cache if it holds the data element in the E or M state, and then the remote cache invalidates it's copy.
