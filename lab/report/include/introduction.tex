@@ -1,13 +1,12 @@
 \section{Introduction}
 \label{sec:int}
-These laboratory assignments aim to increase our knowledge of different cache coherence protocols. The goal is to simulate cache coherence protocols (CCP) on a modeled cache coherent multi-core system using diverse benchmarks. Three cache coherence protocols are targeted; MSI, MESI, and MESI-MG, where the last protocol is an modified version of MESI optimized for migratory sharing. The system model have a shared Last Level Cache (LLC), and each processor have a private L1 cache. Snooping based write-invalidate cache coherence protocols are used by the private L1 caches to ensure coherence, and a simple bus stand for the communication between LLC and private caches. The system is modeled by the Pin tool MultiCacheSim and Pin. In listing~\ref{lst:setup} is the command used for simulating a CCP on the modeled system with a chosen benchmark. To relate the simulation results to excecution time Eq. \ref{eq:cycles} is used. 
+These laboratory assignments aim to increase our knowledge of different cache coherence protocols. The goal is to simulate cache coherence protocols (CCP) on a modeled cache coherent multi-core system using diverse benchmarks. Three cache coherence protocols are targeted; MSI, MESI, and MESI-MG, where the last protocol is an modified version of MESI optimized for migratory sharing. The system model have a shared Last Level Cache (LLC), and each processor have a private L1 cache. Snooping based write-invalidate cache coherence protocols are used by the private L1 caches to ensure coherence, and a simple bus stand for the communication between LLC and private caches. The system is modeled by the Pin tool MultiCacheSim and Pin. In listing~\ref{lst:setup} is the command used for simulating a CCP on the modeled system with a chosen benchmark. To relate the simulation results to excecution time, Eq. \ref{eq:cycles} is used. 
 
 
 
 \begin{lstlisting}[label=lst:setup, basicstyle=\scriptsize, caption={Command used for simulation.}]
 #> ./pin -mt -t ./source/tools/MultiCacheSim/obj-intel64/mcs.so -csize 65536 -bsize 64 -assoc 8 -llc -llcsize 4194304 -llcbsize 64 -llcassoc 16 -numcaches 8 -protos ./source/tools/MultiCacheSim/obj-intel64/mcs_<CCP>.so -- <benchmark> [#threads,..]
 \end{lstlisting}
-
 \begin{equation}
 	$$\label{eq:cycles}$$
 	Cycles = 1 * (WriteHit+ReadHit) + 30 * (readMissesServicedByModified + invalidationsSent)$$ $$+ 20 * LLCHit + 50 * LLCMiss

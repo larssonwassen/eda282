@@ -12,27 +12,27 @@ In this benchmark, one thread increments the values in the counter array, wherea
 This benchmark have no sharing of the counter array. The counter array is divided up equally among the threads, giving each thread access to every nth counter element, where n is the number of threads. Each thread then increments it's assigned counters sequentially. A barrier is placed before a new incrementation lap of the assigned array elements begins. 
 
 \subsubsection*{Benchmark 3 - All shared}
-In this benchmark, the counter array is shared among all threads. Each thread increments every element in the counter array sequentially while in mutual exclusion. A lock is used to provide mutual exclusion and a barrier is placed after all threads have incremented. 
+In this benchmark, the counter array is shared among all threads. Each thread increments every element in the counter array sequentially while in mutual exclusion. A lock is used to provide mutual exclusion and a barrier is placed before a new incrementation lap. 
 
 \subsection{Task 2}
 \label{sec:lab12}
 Here the CCPs MSI and MESI are compared using benchmarks 1 and 2. The difference between the CCPs is that MESI includes an exclusive (E) state, which is beneficial if data is read exclusively by one processor. If the data is then read by another processor, a move to the shared (S) state is made without cost. I.e. MESI can only produce equal or better results than MSI.
 
-In the producer consumer benchmark, the reading threads transition the data element to the E state when accessing the array for the first time if the writing thread have not accessed it already. However, the whole counter array is shared and thus will not state E be of any gain. Therefore, MSI and MESI performs equally regardless of working set size, which is shown in \reffig{fig:resultslab1}.
+In the producer consumer benchmark, the reading threads transition the data element to the E state when accessing the array for the first time if the writing thread have not accessed it already. However, the whole counter array is shared and thus will not state E be of any gain. Therefore, MSI and MESI performs equally regardless of working set size, which is shown in \reffig{fig:lab1bars}.
 
-In the no sharing benchmark the first read access to every element end in state S for MSI and state E for MESI, respectively. The following write transitions the element to state M for both the CCPs, but MSI have to issue a BusUpdate whereas MESI's transition is costless. The BusUpdate broadcasts an invalidate signal which gives MSI a slight reduction in performance compared to MESI. In the small working set the elements will stay in state M to the end of execution, but in the larger working sets the element is fetched from LLC upon each read access due to cache trashing. This makes MSI issue an invalidate broadcast for each incrementation and the accumulated overhead is easily spotted in \reffig{fig:resultslab1}, it is also seen that the overhead become linearly to the size of the working set.
+In the no sharing benchmark the first read access to every element end in state S for MSI and state E for MESI, respectively. The following write transitions the element to state M for both the CCPs, but MSI have to issue a BusUpdate whereas MESI's transition is costless. The BusUpdate broadcasts an invalidate signal which gives MSI a slight reduction in performance compared to MESI. In the small working set the elements will stay in state M to the end of execution, but in working sets larger than a private L1 cache the element has to be fetched from higher levels. This makes MSI issue an invalidate broadcast for each increment and the accumulated overhead is easily spotted in \reffig{fig:lab1bars}. 
 
 \begin{figure}[t]
 	\center
 	\includegraphics[width=0.7\textwidth]{lab1bars}
 	\caption{Simulation results using various cache coherence protocols combined with different working sets and benchmarks.}
-	\label{fig:resultslab1}
+	\label{fig:lab1bars}
 \end{figure}
 
 \subsection{Task 3}
 \label{sec:lab13}
-\todo[inline]{
-Compare MESI and MESI+migratory.
-Why is one better than the other?
-How does the behavior change when the dataset size changes?}
-MESI-MG is a modified version of MESI where the S state is not utilized. If a cache reads a data element it will be forwarded from a remote private cache if it holds the data element in the E or M state, and then the remote cache invalidates it's copy.
+MESI is here compared with MESI-MG by executing benchmark 1 and 3. MESI-MG is a modified version of MESI where the S state is not utilized. If a cache issues a read request of a data element which exists in state E or M in a remote cache, the data is forwarded from the remote cache and then the remote cache invalidates it's copy. By this scheme, the S state is never used.
+
+The producer consumer benchmark benefit from the S state, and therefor produces MESI better results than MESI-MG. In the benchmark, one thread update an element whereas the other threads read it and by migrating the element from one private cache to the other is less optimal than letting the reading threads share the element and read it in parallel. This overhead will be a smaller part of the total cycles as the working set increases, as the misses increase in the private caches and also in the LLC, which is costly in terms of cycles. This trend is shown in \reffig{fig:lab1bars}. 
+
+In the all shared benchmark, every thread increments every data element during mutual exclusion which favors MESI-MG. Each data element is read and modified exclusively by one processor at a time, thus is the S state not beneficial. As MESI-MG do not utilize the S state, as described, it is more suitable than MESI in this benchmark. In Appendix [???] it is shown that the CCPs results are a like, except that MESI have to issue a significant number of invalidates, which is needed for the transition from state S to M. As shown in \reffig{fig:lab1bars}, MESI-MG's benefit is not visible for the working set size increasing the size of the LLC. That is because the cycle count is dominated by the LLC misses, as in the producer consumer benchmark.

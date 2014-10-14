@@ -1,13 +1,12 @@
-\newpage
 \section{Parallelized program for Lab 2}
 \centerline{
 \begin{minipage}{1.0\textwidth}
 \lstinputlisting[caption={\textit{Parallel version of original} \texttt{void Solve(double **A).}}, label={lst:solve}]{include/solve.c}
 \end{minipage}
 }
-\section{Data tables for Lab 2}
+\section{Data table for laboratory assignment 2}
 \begin{table}[h]
-	\caption{\label{tbl:lab2}Results from simulation of program for Lab 2 with various Cache Coherance Protocols and working sets.}
+	\caption{\label{tbl:lab2}Results from simulation of cache coherance protocols for laboratory assignment 2 with various benchmarks and working sets.}
     \begin{adjustwidth}{-2cm}{-2cm}  
         \begin{center}
 
@@ -28,6 +27,88 @@
 				\textit{LLCHits} & 796 & 2171 & 8803 & 2353 & 3490 & 9989 & 2367 & 3539 & 10027 \\
 				\hline
 				
+			\end{tabular}
+		\end{center}
+	\end{adjustwidth}
+\end{table}
+
+\section{Data table for laboratory assignment 1}
+\begin{table}[h]
+	\caption{\label{tbl:lab2}Results from simulation of cache coherance protocols MESI and MSI for laboratory assignment 1, task 2 with various working sets in benchmark 1 and 2.}
+    \begin{adjustwidth}{-2cm}{-2cm}  
+        \begin{center}
+
+			\begin{tabular}{| c | r r r | r r r|}
+				\textbf{Benchmark 1}& \multicolumn{3}{c|}{\textbf{MESI}} & \multicolumn{3}{c|}{\textbf{MSI}} \\
+				\hline
+				&\textit{512}&\textit{1536}&\textit{98304}&\textit{512}&\textit{1536}&\textit{98304}\\
+				\hline
+				\textit{ReadHits} & 183260 & 522357 & 33036398 & 181625 & 522098 & 33034367 \\
+				\textit{ReadMisses} & 25949 & 87210 & 5506223 & 25853 & 87200 & 5506080\\ 
+				\textit{ReadMissesServicedByShared} & 21142 & 48581 & 48576 \\ 
+				\textit{ReadMissesServicedByModified} & 4708 & 8956 & 8949 & 4837 & 8393 & 9392\\ 
+				\textit{WriteHits} & 2888 & 2324 & 2324 & 2299 & 2287 & 1670 \\ 
+				\textit{WriteMisses} & 245 & 427 & 427 & 237 & 355 & 339 \\ 
+				\textit{WriteOnSharedMisses} & 96 & 150 & 150 & 100 & 79 & 79 \\ 
+				\textit{InvalidatesSent} & 132 & 182 & 182 & 130 & 110 & 104 \\ 
+				\textit{LLCMisses} & 3440 & 4461 & 6384893 & 3436 & 4461 & 6384557 \\ 
+				\textit{LLCHits} & 21857 & 91526 & 987 & 21609 & 92054 & 708 \\
+				\hline
+			\textbf{Benchmark 2}& \multicolumn{3}{c|}{\textbf{MESI}} & \multicolumn{3}{c|}{\textbf{MSI}} \\
+				\hline
+				&\textit{512}&\textit{1536}&\textit{98304}&\textit{512}&\textit{1536}&\textit{98304}\\
+				\hline
+				\textit{ReadHits} & 187757 & 542637 & 34410819 & 188383 & 541952 & 34410894 \\
+				\textit{ReadMisses} & 1196 & 11420 & 688749 & 1251 & 11390 & 688769 \\
+				\textit{ReadMissesServicedByShared} & 610 & 552 & 510 & 557 & 422 & 432 \\
+				\textit{ReadMissesServicedByModified} & 512 & 717 & 681 & 619 & 809 & 784 \\
+				\textit{WriteHits} & 5173 & 1813 & 1589 & 5452 & 11667 & 689065 \\
+				\textit{WriteMisses} & 659 & 10932 & 688302 & 634 & 834 & 812 \\
+				\textit{WriteOnSharedMisses} & 520 & 10788 & 688161 & 487 & 689 & 668 \\
+				\textit{InvalidatesSent} & 552 & 10820 & 688191 & 523 & 719 & 698 \\
+				\textit{LLCMisses} & 3425 & 4449 & 887435 & 3429 & 4451 & 887434 \\
+				\textit{LLCHits} & 1289 & 12875 & 801 & 1228 & 12748 & 715 \\
+				\hline
+			\end{tabular}
+		\end{center}
+	\end{adjustwidth}
+\end{table}
+\begin{table}[h]
+	\caption{\label{tbl:lab2}Results from simulation of cache coherance protocols MESI-MG and MESI for laboratory assignment 1, task 3 with working sets in benchmark 1 and 3.}
+    \begin{adjustwidth}{-2cm}{-2cm}  
+        \begin{center}
+
+			\begin{tabular}{| c | r r r | r r r|}
+				\textbf{Benchmark 1}& \multicolumn{3}{c|}{\textbf{MESI-MG}} & \multicolumn{3}{c|}{\textbf{MESI}} \\
+				\hline
+				&\textit{512}&\textit{1536}&\textit{98304}&\textit{512}&\textit{1536}&\textit{98304}\\
+				\hline
+				\textit{ReadHits} & 178879 & 522308 & 33034960 & 181625 & 522098 & 33034367 \\
+				\textit{ReadMisses} & 29477 & 88307 & 5506807 & 25853 & 87200 & 5506080 \\ 
+				\textit{ReadMissesServicedByShared} & 0 & 0 & 0 & 20929 & 49107 & 48024 \\ 
+				\textit{ReadMissesServicedByModified} & 29397 & 58490 & 57961 & 4837 & 8393 & 9392 \\ 
+				\textit{WriteHits} & 2702 & 2796 & 2165 & 2299 & 2287 & 1670 \\
+				\textit{WriteMisses} & 152 & 326 & 318 & 237 & 355 & 339 \\
+				\textit{WriteOnSharedMisses} & 0 & 0 & 0 & 100 & 79 & 79 \\
+				\textit{InvalidatesSent} & 41 & 41 & 33 & 130 & 110 & 104 \\
+				\textit{LLCMisses} & 3441 & 4469 & 6328929 & 3436 & 4461 & 6384557 \\
+				\textit{LLCHits} & 629 & 34862 & 341 & 21609 & 92054 & 708 \\
+				\hline
+				\textbf{Benchmark 3}& \multicolumn{3}{c|}{\textbf{MESI-MG}} & \multicolumn{3}{c|}{\textbf{MESI}} \\
+				\hline
+				&\textit{512}&\textit{1536}&\textit{98304}&\textit{512}&\textit{1536}&\textit{98304}\\
+				\hline
+				\textit{ReadHits} & 148830 & 434686 & 27530254 & 150377 & 436567 & 27529444 \\
+				\textit{ReadMisses} & 29081 & 87674 & 5507118 & 29512 & 87331 & 5506128 \\ 
+				\textit{ReadMissesServicedByShared} & 0 & 0 & 0 & 536 & 762 & 565 \\ 
+				\textit{ReadMissesServicedByModified} & 28981 & 57885 & 58281 & 28874 & 56746 & 56710 \\ 
+				\textit{WriteHits} & 30725 & 88040 & 5507452 & 2707 & 32031 & 5450298 \\
+				\textit{WriteMisses} & 133 & 286 & 291 & 28891 & 56902 & 56834 \\
+				\textit{WriteOnSharedMisses} & 0 & 0 & 0 & 28746 & 56593 & 56563 \\
+				\textit{InvalidatesSent} & 31 & 32 & 35 & 28780 & 56627 & 56589 \\
+				\textit{LLCMisses} & 3433 & 4466 & 6328903 & 3441 & 4468 & 6329140 \\
+				\textit{LLCHits} & 640 & 34833 & 347 & 1215 & 35718 & 769\\
+				\hline
 			\end{tabular}
 		\end{center}
 	\end{adjustwidth}
