@@ -1,2 +1,7 @@
 \section{Discussion}
 \label{sec:dis}
+From the two laboratory assignments performed it has become clear that from a performance point of view MESI is always preferable over MSI. This as the transition to S state comes without any cost so the performance of MESI will be greater or equal to that of MSI. When it comes to MESI-MG the performance impact highly depends on the application. In an application like benchmark 3 where the threads sharing data all performs writes MESI-MG will have a positive impact on performance. On the other hand, in an application where the most sharing consists of reads, like benchmark 1, the impact will be negative.
+
+When analyzing the simulation results it has been noticed that between runs some variations occurred. One solution to this could have been to run the same simulation several times and then use the average. This has however not been done as we are only interested in the general proportions and not the exact values because we want to analyze shown trends.
+
+In \nameref{sec:lab2} the provided working sets were insufficient to mimic the sizes used in \nameref{sec:lab1}. Due to this it was impossible to see if the observed tendencies concerning working set sizes for the three CCPs also would apply on the parallelized program.
