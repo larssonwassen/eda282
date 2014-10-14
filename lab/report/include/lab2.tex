@@ -14,9 +14,9 @@ In listing~\ref{lst:solve} a parallelized version of the function \texttt{void S
 \subsection{Task 3}
 To be able to evaluate the program described in \nameref{subsec:lab2:task2} we decide to mimic the working set sizes in \nameref{sec:lab1}. However, the provided data files does not include a matrix big enough to fill neither each threads L1 cache or the LLC cache.
 
-In \reffig{fig:lab2} results from running the parallelized version of the program in the simulator with different CCP:s and different matrix dimensions are shown. It can be seen that using MESI over MSI does not cause any noticeable boost in performance. This is because the gain of the extra E state becomes of no importance as the cache lines is in the M state most of the time. Some benefit of the E state can though be seen in Table~\ref{tbl:lab2} as the amount of \textit{WriteMisses} and \textit{InvalidationsSent} are a bit lower for MESI than MSI and the gap becomes bigger as the matrix size increases. This does not show in \reffig{fig:lab2} as the cycle count are not dominated by \textit{WriteMisses} and \textit{InvalidationsSent}.
+In \reffig{fig:lab2} results from running the parallelized version of the program in the simulator with different CCPs and different matrix dimensions are shown. It can be seen that using MESI over MSI does not cause any noticeable boost in performance. This is because the gain of the extra E state becomes of no importance as the cache lines is in the M state most of the time. Some benefit of the E state can though be seen in Table~\ref{tbl:lab2} as the amount of \textit{WriteMisses} and \textit{InvalidationsSent} are a bit lower for MESI than MSI and the gap becomes bigger as the matrix size increases. This does not show in \reffig{fig:lab2} as the cycle count are not dominated by \textit{WriteMisses} and \textit{InvalidationsSent}.
 
-Changing to MESI-MG yields a huge performance degradation of 420\%, 394\%, and 430\% for matrix size 25, 100, and 200 respectively. This comes from the sharing performed of the brim lines between threads. For each read of a dot in any of these lines, the dot gets migrated over to the thread performing the read. This frequent migration of dots generates a large amount of \textit{ReadMissesSerivcedByModfied} as can be seen in Table~\ref{tbl:lab2}. The overhead stays fairly constant compared to the other CCP:s when the matrix size increases. This is duo to the proportion of sharing between the threads stays the same.  
+Changing to MESI-MG yields a huge performance degradation of 420\%, 394\%, and 430\% for matrix size 25, 100, and 200 respectively. This comes from the sharing performed of the brim lines between threads. For each read of a dot in any of these lines, the dot gets migrated over to the thread performing the read. This frequent migration of dots generates a large amount of \textit{ReadMissesSerivcedByModfied} as can be seen in Table~\ref{tbl:lab2}. The overhead stays fairly constant compared to the other CCPs when the matrix size increases. This is duo to the proportion of sharing between the threads stays the same.  
 
 \begin{figure}[t]
 	\center
@@ -29,3 +29,33 @@ Changing to MESI-MG yields a huge performance degradation of 420\%, 394\%, and 4
 %\todo[inline]{Outline a strategy to modify the MESI protocol to support the O state. Analyze the MESI\_SMPCache.cpp source to understand how the MESI protocol is currently modeled. Discuss changes that need to be made to the readLine, writeLine, readRemoteAction, and writeRemoteAction functions. Show the necessary changes in pseducode. Should the code that tracks cache access statistics be modified? If so, how?}
 
 To add the Owner (O) state to the existing MESI CCP only some small changes are needed. In \textit{readLine()} and \textit{remoteWriteAction()} no changes are needed. Turning to \textit{readRemoteAction()}, transitions from the E, M, and O states to the O state are added, and all of these transitions provide data to the calling cache. The action taken when in the shared state is removed. For the \textit{writeLine()} the only change needed is to take the same actions when in the O state as in the S state. For the cache access statistics there is no need to change anything
+
+\par\noindent
+\begin{minipage}[t]{.5\textwidth}
+\begin{lstlisting}[language=C,frame=lrtb]
+In readLine()
+	if(MODIFIED) {...}
+	if(EXCLUSIVE) {...}
+
+	if(SHARED)
+		return data		
+
+In writeRemoteAction()
+	if(SHARED) {...}
+\end{lstlisting}%
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{.5\textwidth}
+\begin{lstlisting}[frame=lrtb]
+In readLine()
+	if(MODIFIED || EXCLUSIVE || OWNER) 
+		state = OWNER
+		return data
+
+	if(SHARED)
+	{}
+
+In writeRemoteAction()
+	if(SHARED || OWNER) {...}
+\end{lstlisting}%
+\end{minipage}%
