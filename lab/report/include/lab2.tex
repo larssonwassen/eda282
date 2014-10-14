@@ -15,7 +15,7 @@ In listing~\ref{lst:solve} a parallelized version of the function \texttt{void S
 \todo[inline]{
 Evaluate MSI, MESI, and MESI+migratory in the context of this benchmark. Perform a detailed characterization of the benchmark using different protocols. Discuss how the behavior changes when the working set size is modified. Show how execution time relates to the cache access statistics.}
 
-In \reffig{fig:lab2} results from running the parallelized version of the program in the simulator with different CCP:s and different matrix dimensions are shown. It can be seen that using MSI or MESI does not cause any major change in performance but there is a small speed improvement with MESI over MSI at the bigger matrix sizes. This can be explained by the fact that it is cheaper to go to M state from E state than from S state as this would cause invalidations to be sent on the buss. 
+In \reffig{fig:lab2} results from running the parallelized version of the program in the simulator with different CCP:s and different matrix dimensions are shown. It can be seen that using MESI over MSI does not cause any noticeable boost in performance. This is because the gain of the extra E state becomes of no importance as the cache lines is in the M state for most of the time. Some benefit of the E state can though be seen in table~\ref{tbl:lab2} as the amount of write misses and invalidations sent are a bit lower for MESI than MSI. 
 
 Changing to MESI+MG yields a \~32\% performance boost at the smallest matrix size and \~14\% at the two bigger sizes. These improvements is due to MESI+MG not using the S state at all which the other two CCP:s does. With the smallest matrix size, which fits entirely in the L1 cache,  \todo{WRITE SMART STUFF HERE!!}
 
