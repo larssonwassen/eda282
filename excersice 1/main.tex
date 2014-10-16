@@ -6,6 +6,7 @@
 \usepackage{hyperref}
 \usepackage{mathtools}
 \usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
 \pagestyle{fancy}
 
 \lhead{Chalmers - EDA282}
@@ -85,34 +86,34 @@ and for MESI:
 \item % a
 There is no need to protect the read as if the read returns the wrong value, it will be a lower value than it should and the read can simply be done again.
 \item % b 
-See listing~\ref{lst:q3b}.
+See listing~\ref{lst:q4b}.
 
 \item % c
-See listing~\ref{lst:q3c}.
+See listing~\ref{lst:q4c}.
 \end{enumerate}
 
 \lstset{language={[x86masm]Assembler},frame=single}
-\lstinputlisting[firstline=20, lastline=33, caption={Sync. using T\&S},label={lst:q3b}]{upgASM.asm}
-\lstinputlisting[firstline=37, lastline=43, caption={Sync. using F\&A},label={lst:q3c}]{upgASM.asm}
+\lstinputlisting[firstline=24, lastline=36, caption={Sync. using T\&S},label={lst:q4b}]{upgASM.asm}
+\lstinputlisting[firstline=39, lastline=44, caption={Sync. using F\&A},label={lst:q4c}]{upgASM.asm}
 
 \section*{Q5} % 7.3
 \begin{enumerate}
 \item % a
-See listing~\ref{lst:q4a}.
+See listing~\ref{lst:q5a}.
 \setcounter{enumi}{3}
 \item % d
-See listing~\ref{lst:q4e}.
+See listing~\ref{lst:q5d}.
 \item % e
-See listing~\ref{lst:q4d}.
+See listing~\ref{lst:q5e}.
 \end{enumerate}
 
 
 \lstset{language={[x86masm]Assembler},frame=single}
-\lstinputlisting[firstline=0, lastline=4, caption={F\&ADD X, Rx, a},label={lst:q4a}]{upgASM.asm}
+\lstinputlisting[firstline=2, lastline=5, caption={F\&ADD X, Rx, a},label={lst:q5a}]{upgASM.asm}
 
-\lstinputlisting[firstline=6, lastline=10, caption={SWAP(Rx, X)},label={lst:q4e}]{upgASM.asm}
+\lstinputlisting[firstline=8, lastline=12, caption={SWAP(Rx, X)},label={lst:q5d}]{upgASM.asm}
 
-\lstinputlisting[firstline=12, lastline=18, caption={CAS Rx, Ry, X},label={lst:q4d}]{upgASM.asm}
+\lstinputlisting[firstline=15, lastline=21, caption={CAS Rx, Ry, X},label={lst:q5e}]{upgASM.asm}
 
 
 \end{document}
