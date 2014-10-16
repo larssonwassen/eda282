@@ -1,7 +1,7 @@
 ##### Q5a #####
-      LL  R1, X
-Loop: ADDi Rx, R1, a
-      SC  Rx, X
+Loop: LL Rx, X
+      ADDi Rx, Rx, a
+      SC Rx, X
       BEQZ Rx, Loop
 
 ##### Q5d #####
@@ -36,9 +36,7 @@ Ltn:
       BLT R3, N, Ltn
 
 ##### Q4c ####### 
-      ADDi R1, R0, #1
-      F&A R1, BAR
-
+      F&A BAR, Rx, #1
 Ltn: 
-      LD  R2, BAR
-      BLT R2, N, Ltn
+      LD  Rx, BAR
+      BLT Rx, N, Ltn

@@ -7,6 +7,7 @@
 \usepackage{mathtools}
 \usepackage{fancyhdr}
 \usepackage[margin=1in]{geometry}
+\usepackage{color}
 \pagestyle{fancy}
 
 \lhead{Chalmers - EDA282}
@@ -16,7 +17,7 @@
 
 
 \begin{document}
-
+\textcolor{red}{\huge Changed stuff marked in red.}
 \section*{Q1}
 \begin{enumerate}
 \item % a
@@ -31,14 +32,17 @@ One way to parallelize the \texttt{kernel} would be to simply divide all points 
 As mentioned in (b), there would be a need for synchronization of the variables \texttt{new\_centers} and \texttt{new\_centers\_len}. For the other global variables, \texttt{clusters} and \texttt{feature} are only read and \texttt{membership} is only accessed based on the index of each point and as the different processors have no overlapping points there will accesses to the same addresses. In listing~\ref{lst:kernelcoarse} a modified kernel with \texttt{OpenMP} directives for a coarse grained aproach is shown.
 
 \item % d
-A more fine grained solution than the one presented in (c) is shown in listing~\ref{lst:kernelfine} where the \texttt{atomic} directive is used on each of the critical varaibles. As explained in (c) only \texttt{new\_centers} and \texttt{new\_centers\_len} need this protection so two locks is enough.
+\textcolor{red}{
+A more fine grained solution than the one presented in (c) is shown in listing~\ref{lst:kernelfine} where \texttt{OpenMP}s runtime locks have been used. As explained in (c) \texttt{new\_centers} and \texttt{new\_centers\_len} need protection an now also \texttt{delta} as we no longer use the \texttt{reduction} directive. As we protext every singel address new no need $ 1 + 3 \times nclusters$ locks in total.
+}
 
 
 \end{enumerate}
 \lstset{language=C,frame=single}
 \lstinputlisting[lastline=31, caption={Modified kernel coarse grained},label={lst:kernelcoarse}]{upgC.c}
+\textcolor{red}{
 \lstinputlisting[firstline=32, caption={Modified kernel fine grained},label={lst:kernelfine}]{upgC.c}
-
+}
 \section*{Q2}
 The request write/read sequence will be as follows: \\
 
@@ -94,8 +98,9 @@ See listing~\ref{lst:q4c}.
 
 \lstset{language={[x86masm]Assembler},frame=single}
 \lstinputlisting[firstline=24, lastline=36, caption={Sync. using T\&S},label={lst:q4b}]{upgASM.asm}
+\textcolor{red}{
 \lstinputlisting[firstline=39, lastline=44, caption={Sync. using F\&A},label={lst:q4c}]{upgASM.asm}
-
+}
 \section*{Q5} % 7.3
 \begin{enumerate}
 \item % a
@@ -109,12 +114,15 @@ See listing~\ref{lst:q5e}.
 
 
 \lstset{language={[x86masm]Assembler},frame=single}
+\textcolor{red}{
 \lstinputlisting[firstline=2, lastline=5, caption={F\&ADD X, Rx, a},label={lst:q5a}]{upgASM.asm}
-
+}
+\textcolor{red}{
 \lstinputlisting[firstline=8, lastline=12, caption={SWAP(Rx, X)},label={lst:q5d}]{upgASM.asm}
-
+}
+\textcolor{red}{
 \lstinputlisting[firstline=15, lastline=21, caption={CAS Rx, Ry, X},label={lst:q5e}]{upgASM.asm}
-
+}
 
 \end{document}
 
