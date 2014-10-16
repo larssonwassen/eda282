@@ -1,9 +1,9 @@
 \section{Reducing refresh power} 
 \label{sec:red}
-\todo[inline]{Do an intro that includes a road map, mention the refresh scheduling approach that schedules real access together with refresh ops. Make an intro to ARTV (somewhat done) }
-There are several methods that can be applied to decrease the refresh rate and these can be categorized depending on with sort of information the scheduling decisions are based upon. The four sort of information are: access recency, cell retention times, error tolerance of the data, and line validity. This categorization follows the taxonomy proposed by authors \cite{dtail}. 
+There are several approaches to decrease the refresh power by reducing unnecessary refreshes and these can be categorized depending on with sort of information the scheduling decisions are based upon. The four types of information are: access recency, cell retention time, error tolerance of the data, and line validity. This categorization follows the taxonomy proposed by Cui et al. \cite{dtail}. These four approaches are explained further in \ref{sec:red:app}, whereas techniques based on the approaches are summarized in \ref{sec:red:tech}. 
 
 \subsection{Approaches to reduce refresh power}
+\label{sec:red:app}
 
 \subsubsection*{\textbf{Access Recency}}
 As mentioned, a DRAM access is performed in the same way as a refresh, which makes it possible to delay the next refresh operation to an accessed row without endangering the stored data. All accessed rows within the maximum refresh period result in that a refresh can be postponed. This implies that if the system seldom accesses the DRAM data, or only a small portion of it, the approach's gain diminishes.
@@ -25,6 +25,7 @@ In a system that does not utilize all the available memory space it is unnecessa
 %If the OS has not allocated the page frame, its data are meaningless, and refreshes to it are wasteful. Several software approaches thus attempt to trigger refreshes only for rows with valid data. The effectiveness of schemes using such V refresh information is sensitive to the total memory usage of the system.
 
 \subsection{Techniques to reducing refresh power}
+\label{sec:red:tech}
 
 
 \subsubsection*{\textbf{Smart Refresh}}
