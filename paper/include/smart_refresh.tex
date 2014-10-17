@@ -7,6 +7,6 @@ The counters bit size corresponds to the time granularity in where an access can
 
 If the row accesses drops below $1\%$ during a maximum refresh period, Smart Refresh is disabled. As stated, an access recency technique is dependent on row accesses to be of gain. When disabled, the MC uses its default CBR refresh scheme. Smart refresh is then activated if the row accesses increases above $2\%$.
 
-Smart Refresh modifies the MC but does not change the DRAM module nor the interface between them. The modifications of the MC constitute of counter update logic, the counter array, and a pending refresh request queue. The memory footprint of the modifications is $0.0024\%$ of total device capacity when three-bits counters are used assuming a cache row size of $16\:KB$.
+Smart Refresh modifies the MC but does not change the DRAM module nor the interface between them. The modifications of the MC constitute of counter update logic, the counter array, and a pending refresh request queue. The memory footprint of the modifications is $0.0024\%$ of total device capacity when three-bits counters are used assuming a cache row size of \textit{16~KB}.
 
-The technique was simulated on $2$ GB of main memory. Result shows that the refresh reduction was in average $59\%$ and refresh power consumption savings was on average $52\%$, all without any performance degradation.
+The technique was simulated on \textit{2~GB} of main memory. Result shows that the refresh reduction was in average $59\%$ and refresh power consumption savings was on average $52\%$, all without any performance degradation.
