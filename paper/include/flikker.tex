@@ -1,13 +1,10 @@
 %flikker
-Tolerance!\cite{flikker}
-\todo[inline]{Drafty below.}
+The technique targets Data Tolerance and is proposed by Liu et al. \cite{flikker} and  distinguish data as critical or non-critical. The critical data is refreshed at the normal maximal refresh period, whereas the non-critical data is refreshed at a much lower rate. Refreshing at a lower rate saves refreshing power but increases data corruption. This trade-off was found to be balanced with a refresh period of one second, where the refresh power savings was expected to be $23\%$ and the error rate $4.0 \times 10^{-8}$, if the critical part is $25\%$.
 
-Application-level technique.
-Targets smartphones on the first hand.
+Flikker refreshes the data by extending the \textit{Partial Array Self Refresh} (PASR) mode which was introduced 2002 in mobile DRAMs. PASR mode refreshes a portion of the DRAM array of one bank when the mobile system is in sleep mode, and the technique modifies PASR's internal address counter to support two refresh rates.
 
-Modifies the MC.
-Extends Partial-Array Self Refresh Mode (PASR), which was introduced 2002 in mobile DRAM. 
+To support the proposed partition scheme, modifications in the operating system, runtime system, and each application are required. In the application, the developer distinguish the program variables as either critical or non-critical. Then, the runtime system uses a custom allocator that places the two types of variables on separate pages. The OS extends the page-table entries one bit, which are utilized by the runtime system to mark the pages depending on its criticality. Pages are then mapped by the OS based on the extended bit, to either the normal rate refreshed part or the low rate refreshed part of a bank. % To detailed.
 
-Modifies SW: Applications, the runtime system and the OS.
+% Add the different configurations that were tested. 
 
-
+Flikker was simulated on a mobile device. The results of some of the tested applications were degraded, whereas most applications were not affected by the injected faults at all. The partitioning scheme can potentially lower performance as locality of data elements changes, but the found performance degradation was $1\%$ or less. No loss of reliability was experienced, and the technique saved between $20$-$25\%$ of total DRAM power consumption depending on application.
