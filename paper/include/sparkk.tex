@@ -1,5 +1,7 @@
 %Sparkk
-Lucas et al. \cite{sparkk} propses Sparkk, a technique based on Data Tolerance.
+Lucas et al. \cite{sparkk} proses Sparkk, a technique based on Data Tolerance and Retention Time. Sparkk gives fine grained control of refresh rates on a banks' rows. Bit mapping is used to distinguish bits with different criticality, where the bits of the same criticality is placed near each other of the global rank row. This scheme gives the advantage to refresh the highly critical bits at one refresh rate, whereas the refresh rate decreases along with the criticality. ADD that it need to have per bank refresh........
 
-\todo[inline]{Ccopy-paste:}
-Multiple authors have suggested techniques where programmers can specify which data is critical and can not tolerate any bit errors and which data can be stored approximately. However, in these approaches all bits in the approximate area are treated as equally important. We show that this produces suboptimal results and higher energy savings or better quality can be achieved, if a more fine-grained approach is used. Our proposal is able to save more refresh power and enables a more effective storage of non-critical data by utilizing a non-uniform refresh of multiple DRAM chips and a permutation of the bits to the DRAM chips. 
+The refresh scheme relies on an ordered list of one entry per memory area, which is traversed through by the internal address counter. Each memory area is formed of any number of consecutive rows and can have different refresh periods for each bank. An entry consists of the chosen refresh rates, time-out bits, and the address to the end of the memory area. When the counter address and the address to the end of the memory area matches, the MC advances to the next entry. There, the MC decides if to issue a refresh operation and to which subranks.
+
+\todo[inline]{Drafty below}
+Downside: SW modifications. Mapping has to be created for all data types. Somewhat complex -> draws more power = mitigates advantages.
