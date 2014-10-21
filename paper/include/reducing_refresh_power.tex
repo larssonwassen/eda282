@@ -68,23 +68,3 @@ In a system that does not utilize all the available memory space it is unnecessa
 \subsubsection*{\textbf{Temperature Variation Aware Bank-wise Refresh - TVABR}}
 \label{par:tempaware}
 \input{include/tempaware}
-
-
-\subsection{Differences and similarities of the approaches}
-\todo[inline]{Drafty text below!}
-
-Differences and similarities for ARTV approaches.
-
-What in the DRAM devices is modified? / Where is data placed.
-
-How much knowledge does the techniques have about the running software?
-
-Smart Refresh:
-Employed its solution to 2 GB ram. What about todays sizes? How effective is the technique now? - Only works effective if large parts the memory is accessed, i.e. large part of the memory has to be valid to begin with. Is it so today?
-
-Smart Refresh \& Refrint:
-Refrint is somewhat a extension of Smart Refresh. Smart Refresh's features can be laid somewhat equal to Refrint's time-based polices, whereas the data-based polices have no equivalence in Smart Refresh.
-
-They both modify the memory controller, and almost in the same way. But Refrint has no timers that is getting decremented the whole time, and instead copies a global "timer" to the line associated bits upon access. Of course Refrint's data-based polices also adds logic to the memory controller.
-
-Discuss energy savings. Hard to do eDRAM vs DRAM...
