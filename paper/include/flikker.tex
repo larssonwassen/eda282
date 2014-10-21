@@ -1,7 +1,7 @@
 %flikker
 The technique is proposed by Liu et al. \cite{flikker} and targets Data Tolerance. Flikker distinguish data as critical or non-critical. The critical data is refreshed at the normal maximal refresh period, whereas the non-critical data is refreshed at a much lower rate. Refreshing at a lower rate saves refreshing power but increases data corruption. This trade-off was found to be balanced with a refresh period of one second, where the refresh power savings was expected to be $23\%$ and the error rate $4.0 \times 10^{-8}$, if the critical part is $25\%$.
 
-Flikker refreshes the data by extending the \textit{Partial Array Self Refresh} (PASR) mode which was introduced 2002 in mobile DRAMs. PASR mode refreshes a portion of the DRAM array of one bank when the mobile system is in sleep mode, and the technique modifies PASR's internal address counter to support two refresh rates.
+Flikker refreshes the data by extending the \textit{Partial Array Self Refresh} (PASR) mode which was introduced 2002 in mobile DRAMs. PASR mode refreshes a portion of the DRAM array of one bank when the mobile system is in sleep mode, and the technique modifies PASR's address counter to support two refresh rates.
 
 To support the proposed partition scheme, modifications in the operating system, runtime system, and each application are required. In the application, the developer distinguish the program variables as either critical or non-critical. Then the runtime system and OS keep the data of different criticality apart by allocating them on different pages and mapping these pages to the corresponding part of the bank.
 
