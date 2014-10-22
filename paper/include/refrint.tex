@@ -9,6 +9,6 @@ Depending on the application's memory footprint and cache visibility the program
 
 \todo[inline]{Drafty below. Ask Sally, confusing paper.}
 
-Refrint modifies the MC and also stores data on chip(?). In an unmodified MC, there already exist a counter which can be used as the global counter and the authors have chosen to store the $N$ snapshot bits in the MC as well as the rows' valid bits in the MC. From experiments, the authors found out that one or two are good values for $N$. The logic to process the policies for the cold rows consists of decision logic, as well as Count bits and State bits for each cache row. This logic is located on chip(?)/in DRAM(?)(???) and has apparently a negligible overhead. In simulations, $N$ was two bits and Count was 5 bits, giving a total overhead of $0.6\%$, when cache row size is 64 bytes.
+Refrint modifies the MC and also stores data on chip(?). In an unmodified MC, there already exist a counter which can be used as the global counter and the authors have chosen to store the $N$ snapshot bits in the MC as well as the rows' valid bits in the MC. From experiments, the authors found out that one or two are good values for $N$. The logic to process the policies for the cold rows consists of decision logic, as well as Count bits and State bits for each cache row. This logic is located on chip(?)/in DRAM(?)(???) and has apparently a negligible overhead. In simulations, $N$ was two bits and Count was 5 bits, giving a total overhead of $0.005\%$, when cache row size is \textit{8~KB}.
 
-Presents the results. Add that we can not really use the result as they are from eDRAM.
+Present the results. Add that we can not really use the result as they are from eDRAM.
