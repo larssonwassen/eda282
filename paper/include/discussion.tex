@@ -2,7 +2,17 @@
 \label{sec:disc}
 
 \todo[inline]{Drafty text below!}
+
+\textbf{Mention some smart scheduling techniques}
+herpa herpa
+
+CREAM CREAM \cite{cream}
+
+Another proposed technique is ESKIMO by Isen and John \cite{eskimo}, which focus at reducing total DRAM power through optimizing the accesses to the DRAM. By using one bit of a cache row to denote whether it hold nonsense data, it becomes possible to resolve some memory accesses in the caches, which otherwise would have needed to access DRAM. A memory region is regarded as nonsense if it has been deallocated, or allocated but not written to. The ISA has to be extended to provide the allocation and deallocation information. If a block has to be replaced in a write-through cache and the replaced block is dirty but also deallocated, the cache can ignore writing the replaced block to memory. Similarly, a write miss to a newly allocated area results in a read access that can also be ignored. Combining ESKIMO with the selective refresh implementation proposed by Ohsawa \cite{ohsawa} (ESKIMO[31]), $39\%$ of total DRAM power was saved on average.
+
 \textbf{Broadly compare the techniques from different approaches}
+
+
 
 \textbf{Advantages and disadvantages for each approach}
 -What is modified? / Where is stuff stored?
@@ -22,12 +32,9 @@ Discuss energy savings. Hard to do eDRAM vs DRAM...
 
 \textbf{Which techniques can be combined?}
 
-... any of these techniques can be combined with `scheduling real accesses together with refresh ops' (can them???). Mention CREAM as an example. 
+... any of these techniques can be combined with `scheduling real accesses together with refresh ops' (can them???)
 
-Another proposed technique is ESKIMO by Isen and John \cite{eskimo}, which focus at reducing total DRAM power through optimizing the accesses to the DRAM. By using one bit of a cache row to denote whether it hold nonsense data, it becomes possible to resolve some memory accesses in the caches, which otherwise would have needed to access DRAM. A memory region is regarded as nonsense if it has been deallocated, or allocated but not written to. The ISA has to be extended to provide the allocation and deallocation information. If a block has to be replaced in a write-through cache and the replaced block is dirty but also deallocated, the cache can ignore writing the replaced block to memory. Similarly, a write miss to a newly allocated area results in a read access that can also be ignored. The latter optimization has support of a structure stored in DRAM which tracks nonsense rows. 
-
-The 
-Combining ESKIMO with the selective refresh implementation proposed by Oshawa \cite{oshawa} (ESKIMO[31]), $39\%$ of total DRAM power was saved on average.   
-
+\textbf{3D stacked DRAM discussion}
 -Will any approach be benefited / dis-benefited by it?
+
 -Which technique seems future proof?
