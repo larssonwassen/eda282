@@ -8,11 +8,74 @@ herpa herpa
 
 CREAM CREAM \cite{cream}
 
-Another proposed technique is ESKIMO by Isen and John \cite{eskimo}, which focus at reducing total DRAM power through optimizing the accesses to the DRAM. By using one bit of a cache row to denote whether it hold nonsense data, it becomes possible to resolve some memory accesses in the caches, which otherwise would have needed to access DRAM. A memory region is regarded as nonsense if it has been deallocated, or allocated but not written to. The ISA has to be extended to provide the allocation and deallocation information. If a block has to be replaced in a write-through cache and the replaced block is dirty but also deallocated, the cache can ignore writing the replaced block to memory. Similarly, a write miss to a newly allocated area results in a read access that can also be ignored. Combining ESKIMO with the selective refresh implementation proposed by Ohsawa \cite{ohsawa} (ESKIMO[31]), $39\%$ of total DRAM power was saved on average.
+Another proposed technique is ESKIMO by Isen and John \cite{eskimo}, which focus at reducing total DRAM power through optimizing the accesses to the DRAM. By using one bit of a cache row to denote whether it hold nonsense data, it becomes possible to resolve some memory accesses in the caches, which otherwise would have needed to access DRAM. A memory region is regarded as nonsense if it has been deallocated, or allocated but not written to. The ISA has to be extended to provide the allocation and deallocation information. If a block has to be replaced in a write-through cache and the replaced block is dirty but also deallocated, the cache can ignore writing the replaced block to memory. Similarly, a write miss to a newly allocated area results in a read access that can also be ignored. Combining ESKIMO with the selective refresh implementation proposed by Ohsawa \cite{ohsawa}, $39\%$ of total DRAM power was saved on average.
 
-\textbf{Broadly compare the techniques from different approaches}
+\textbf{Broadly compare the techniques}
+\begin{table*}[t]
+	\caption{\label{tbl:summary}Summarized stuff.}
+        \begin{center}
+			\normalsize
+			\begin{tabular}{ l r r r r r r}
+				\textbf{Technique} & \parbox{2cm}{ \textbf{Refresh \linebreak information*}} & \textbf{Modifies} & \parbox{1.7cm}{ \textbf{Refresh \linebreak reduction}} & \parbox{2.2cm}{ \textbf{DRAM power \linebreak reduction}} & \parbox{1.2cm}{\textbf{Storage \newline Overhead}} & \parbox{1.5cm}{\textbf{Performance impact}} \vspace{0.05cm} \\
+				\hline
+				\textit{Smart Refresh} & A & MC & 59\% & $12.13\%$ & $0.0048\%$  & Unknown  \\
+				\textit{Refrint} & A & MC, (?) & N/A & N/A  & $0.005\%$  & N/A  \\
+				\hline
+				\textit{RAIDR} & R & MC & $74.6\%$ & $8.3\%$  & $0.031\%$  & $4.1\%$  \\
+				\textit{DTail} & V, R & MC, DDRx & $88.2\% \to 98.9\% $ & $< 23\%$  & $0.006\%$ & R:  \\
+				\textit{RIO} & R & OS & $87.5\%$ & Unknown  & $0.1\%$  & $4.5\%$ \\
+				\textit{SECRET} & R & MC & $87.5\%$ & $18.6\%$  & $>0.01\%$  & $\pm 1.4\%$  \\
+				\hline
+				\textit{PARIS} & V & MC & Unknown & $-41.7\%$ DTail-V  & $0.0015\%$  & $-4.4\%$ DTail-V  \\
+				\hline
+				\textit{Flikker} & T & MC, OS, Apps & Unknown & $20\% \to 25\%$  & $0.005\%$  & $-1\%$   \\
+				\textit{Sparkk} & V, T  & MC, OS, Apps &  $+50\%$ Flikker & Unknown & Unknown  & Unknown \\
+				\hline
+			\end{tabular}
+		\end{center}
+\end{table*}
+
+Smart refresh
+Result shows that the refresh reduction was in average 59\%
+and refresh power consumption savings was on average 52\%,
+all without any performance degradation. 12.13\% reduction of total DRAM
+The memory
+footprint of the modifications is 0.0048\% of total device
+capacity when three-bits counters are used assuming a DRAM
+row size of 8 KB.
 
 
+Refrint
+N/A
+
+Flikker
+The partitioning scheme can potentially lower performance as
+locality of data elements changes, but the found performance
+degradation was 1\% or less. No loss of reliability was ex-
+perienced, and the technique saved between 20-25\% of total
+DRAM power consumption depending on application.
+In simulations, N was two bits and Count
+was 5 bits, giving a total overhead of 0.005\%, with a row size
+of 8 KB.
+
+Sparkk
+Sparkk produces higher peak SNR at half the
+average refresh rate used for Flikker.
+
+
+Modifies applications:
+Flikker, Sparkk
+
+Modifies OS/runtime system:
+ESKIMO, Flikker, Sparkk.
+
+Modifies MC:
+All but RIO and PARIS.
+
+Only in SW:
+RIO, PARIS.
+
+ROR doesn't work with $<$ 32 GB, cant keep up the req. speed.
 
 \textbf{Advantages and disadvantages for each approach}
 -What is modified? / Where is stuff stored?

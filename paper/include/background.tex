@@ -28,7 +28,6 @@ To write to a row, the corresponding word line is first activated. As during a r
 
 As mentioned, the capacitors leak charge over time and have to be recharged in order to preserve the data. The refresh is performed by opening a row to let the sense amplifiers magnify the detected voltage change and thus recharge the cells to either $V_{DD}/2$ or $0\:V$. This follows the same procedure as a read operation and thus is the row always refreshed when a read is performed. % Is it clear that the row is refreshed during a write?
 
-\todo[inline]{change the next paragraph to introduce retention time.}
 The memory controller (MC) normally issues refresh operations periodically at an interval of \textit{64~ms} for each row, an interval that has been constant for the latest DRAM specifications [source] and called \textit{maximum refresh period}. This interval is conservatively halved if the DRAM exceeds the specified working temperature of $85^{\circ}C$. 
 
 To refresh one rank, the simplest approach is to refresh all banks in parallel row-by-row at the start of the \textit{64~ms} interval. This approach is called \textit{burst refresh} and blocks normal accesses during the burst time, where power consumption peaks. A better alternative is to use \textit{distributed refresh}, which scatter the refreshes across the interval, resulting in a lower average latency for the processor and more stable power consumption.
