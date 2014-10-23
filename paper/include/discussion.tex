@@ -6,7 +6,7 @@
         \begin{center}
 			\normalsize
 			\begin{tabular}{ l r r r r r r}
-				\textbf{Technique} & \parbox{2cm}{ \textbf{Refresh \linebreak information*}} & \textbf{Modifies} & \parbox{1.7cm}{ \textbf{Refresh \linebreak reduction}} & \parbox{2.2cm}{ \textbf{DRAM power \linebreak reduction}} & \parbox{1.2cm}{\textbf{Storage \newline Overhead}} & \parbox{1.5cm}{\textbf{Performance impact}} \vspace{0.05cm} \\
+				\textbf{Technique} & \parbox{2cm}{ \textbf{Refresh \linebreak information}} & \textbf{Modifies} & \parbox{1.7cm}{ \textbf{Refresh \linebreak reduction}} & \parbox{2.2cm}{ \textbf{DRAM power \linebreak reduction}} & \parbox{1.2cm}{\textbf{Storage \newline Overhead}} & \parbox{1.5cm}{\textbf{Performance impact}} \vspace{0.05cm} \\
 				\hline
 				\textit{Smart Refresh} & A & MC & 59\% & $12.13\%$ & $0.0048\%$  & Unknown  \\
 				\textit{Refrint} & A & MC, (?) & N/A & N/A  & $0.005\%$  & N/A  \\
@@ -16,8 +16,8 @@
 				\textit{RIO} & R & OS & $87.5\%$ & Unknown  & $0.1\%$  & $4.5\%$ \\
 				\textit{SECRET} & R & MC & $87.5\%$ & $18.6\%$  & $\approx 0.01\%$  & $\pm 1.4\%$  \\
 				\hline
-				\textit{DTail-V} & V & MC, DDRx & $\approx 10\% \to 90\% $ & $41.7\%$ \textit{PARIS}  & $0.0015\%$ & $4.4\%$ \textit{PARIS}  \\
-				\textit{PARIS} & V & MC & $\approx 10\% \to 90\%$ & Unknown  & $0.0015\%$  & Unknown \\
+				\textit{DTail-V} & V & MC, DDRx, (OS) & $\approx 10\% \to 90\% $ & $41.7\%$ \textit{PARIS}  & $0.0015\%$ & $4.4\%$ \textit{PARIS}  \\
+				\textit{PARIS} & V & MC, OS & $\approx 10\% \to 90\%$ & Unknown  & $0.0015\%$  & Unknown \\
 				\hline
 				\textit{Flikker} & T & MC, OS, Apps & Unknown & $20\% \to 25\%$  & $0.005\%$  & $-1\%$   \\
 				\textit{Sparkk} & V, T  & MC, OS, Apps &  $50\%$ \textit{Flikker} & Unknown & Unknown  & Unknown \\
@@ -59,19 +59,19 @@ Techniques that relies of ROR can have problems with DRAM capacities above \text
 \textbf{Modifications required and future potential}
 
 \todo[inline]{describe the table}
+-no area info
 
-Techniques which can be adopted right away is .. , which also got a good potential.
+Techniques which only require OS modifications is easier to adopt than those who need other changes. RIO is a good example of a technique which can be adopted after light kernel updates. The potential of RIO is significant compared to the modifications needed, as it reduces refreshes to the same degree as R based techniques that need hardware modifications at the cost of higher storage overhead. Moreover, all other surveyed techniques require specific support from at least the MC.
 
-little more modifications...
+Among the techniques which modifies the MC, there are one group that in addition to their logic also have large tables in the MC; Smart Refresh, Refrint, RAIDR, and PARIS. Another group stores it's data in the DRAM instead of the MC; SECRET, and DTail. The advantage of keeping the refresh data in DRAM is lower MC area overhead and cheaper memory, whereas the downside is that the data has to be cached or prefetched to the MC to mitigate the longer access time of DRAM. DTail has additional need of a extension to the DDRx standard, which can complicate the adoption of the technique.
 
-Other techniques require more modifications to be adopted, but also has a higher potential. This and that technique.
+The techniques that requires the heavies modifications are those based on T. Even so, their potential is good and Sparkk's total DRAM power reduction is high, but the changes needed will not be transparent for the application programmer, who has to learn the concept of approximate data in order for the technique to be efficient. This is maybe to much to ask, therefor we do believe that T based techniques has lower future potential than R and V based techniques.
 
-Techniques which we do not believe to have a larger future potential are the approaches based on Access Recency, alas it is quite simple to implement, the trend is to increase the DRAM capacity and cache structures, which speaks against the usage of this approach. But of course, in systems that does not follow these trends (as the previous mentioned ones), Access Recency can have a chance to be adopted. 
-
+We believe that the R and V approaches is the most promising for the future. This as techniques based on Access Recency, even though they are quite simple to implement, the trend is to increase the DRAM capacity and cache structures, which speaks against the usage of this approach. But of course, in systems that does not follow these trends (as the previous mentioned ones), Access Recency can have a chance to be adopted. 
 
 \textbf{Which techniques can be combined?}
-Can any of the techniques from different approaches be combined?
 
-... they can all be combined with techniques orthogonal to all approaches, as smart scheduling techniques.
+To achieve a larger DRAM power reduction, techniques from different approaches can be combined\footnote{Or you just shut off the computer and enjoy the autumn rain}. An example of this is RIO+PARIS, which increases the refresh reduction to $93.8\%$. If DTail-RV is used instead, the refresh reduction increases to $98.9\%$. DTail could be extended with an arbitrary T data acquisition technique for further improvements. All surveyed techniques target to reduce refresh power, but to achieve the greater goal of minimizing total DRAM power, smart scheduling of all DRAM accesses could advantageously be incorporated. 
 
 For example has Isen and John proposed the smart scheduling technique ESKIMO \cite{eskimo}, which focus at reducing total DRAM power through optimizing the accesses to the DRAM. By using one bit of a cache row to denote whether it hold nonsense data, it becomes possible to resolve some memory accesses in the caches, which otherwise would have needed to access DRAM. A memory region is regarded as nonsense if it has been deallocated, or allocated but not written to. The ISA has to be extended to provide the allocation and deallocation information. If a block has to be replaced in a write-through cache and the replaced block is dirty but also deallocated, the cache can ignore writing the replaced block to memory. Similarly, a write miss to a newly allocated area results in a read access that can also be ignored. Combining ESKIMO with the selective refresh implementation proposed by Ohsawa \cite{ohsawa}, $39\%$ of total DRAM power was saved on average.
+

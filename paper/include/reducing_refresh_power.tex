@@ -5,28 +5,21 @@ There are several approaches to decrease the refresh power by reducing unnecessa
 \subsection{Approaches to reduce refresh power}
 \label{sec:red:app}
 
-\subsubsection*{\textbf{Access Recency}}
+\subsubsection*{\textbf{Access Recency (A)}}
 As mentioned, a DRAM access is performed in the same way as a refresh, which makes it possible to delay the next refresh operation to an accessed row without endangering the stored data. All accessed rows within the maximum refresh period result in that a refresh can be postponed. This implies that if the system seldom accesses the DRAM data, or only a small portion of it, the approach's gain diminishes.
 
 
-\subsubsection*{\textbf{Retention Time}}
+\subsubsection*{\textbf{Retention Time (R)}}
 The need for refresh is as mentioned caused by leakage in the memory cells. Retention time is a measurement of the time it takes before a cell loose its data if not refreshed (recharged). Variations in the manufacturing process causes a exponentially distributed fluctuation \cite{katayama} in the retention time of the DRAM cells on the same chip. To accommodate for the cells with the lowest retention time manufacturers produce chips with average retention times much higher than possible minimum. This gives room for optimization using variable refresh rate for different cells. The retention time is also highly sensitive to temperature variations and becomes drastically lower at higher temperatures. For techniques using this approach the biggest advantage is that the improvements are independent of workload, except for a potential rise in temperature which would lower the retention time.
 
-%Retention time refers to the period during which cells hold valid values as charge gradually leaks. Process variation [10][16] causes the retention time of DRAM cells to vary across the chip. Note that approaches that ex-ploit R information are insensitive to system workloads and global memory usage, which makes them attractive omponents for a refresh-optimized memory subsystem.
-
-\subsubsection*{\textbf{Data Tolerance}}
+\subsubsection*{\textbf{Data Tolerance (T)}}
 In the most approaches all data loss is seen as intolerable. In this approach data is categorized depending on how critical it is and e.g. approximate computations, games, or media processing can tolerate some bit errors while still producing a acceptable result. This yields that cells containing data from such applications may be refreshed more seldom. Using this approach the energy and performance savings achieved is highly depending on what kind of applications is most commonly run on the system.
 
-% Applications like games, media processing, machine learning, and unstructured information analysis tolerate errors in portions of their data and still produce acceptably accurate results. Approximate computation [31, 8] exploits this approximate data to realize tradeoffs among performance, energy, and accuracy. Cells containing such error-tolerant T data need not be refreshed as often as those containing critical data. How many cells fall into this category depends on application characteristics.
-
-\subsubsection*{\textbf{Validity}}
+\subsubsection*{\textbf{Validity (V)}}
 In a system that does not utilize all the available memory space it is unnecessary to refresh parts not used. Therefore, cells containing data that are not valid does not need to be refreshed. This approach is highly sensitive to memory utilization of the system and its effects on energy consumption and performance improvements will be diminishing on systems with high workload.  
-
-%If the OS has not allocated the page frame, its data are meaningless, and refreshes to it are wasteful. Several software approaches thus attempt to trigger refreshes only for rows with valid data. The effectiveness of schemes using such V refresh information is sensitive to the total memory usage of the system.
 
 \subsection{Techniques to reducing refresh power}
 \label{sec:red:tech}
-
 
 \subsubsection*{\textbf{Smart Refresh}}
 \label{par:smartrefresh}
