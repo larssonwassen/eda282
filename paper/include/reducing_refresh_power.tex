@@ -16,7 +16,7 @@ The need for refresh is as mentioned caused by leakage in the memory cells. Rete
 In the most approaches all data loss is seen as intolerable. In this approach data is categorized depending on how critical it is and e.g. approximate computations, games, or media processing can tolerate some bit errors while still producing a acceptable result. This yields that cells containing data from such applications may be refreshed more seldom. Using this approach the energy and performance savings achieved is highly depending on what kind of applications is most commonly run on the system.
 
 \subsubsection*{\textbf{Validity (V)}}
-In a system that does not utilize all the available memory space it is unnecessary to refresh parts not used. Therefore, cells containing data that are not valid does not need to be refreshed. This approach is highly sensitive to memory utilization of the system and its effects on energy consumption and performance improvements will be diminishing on systems with high workload.  
+In a system that does not utilize all the available memory space it is unnecessary to refresh parts not used. Therefore, cells that do not keep valid data do not need to be refreshed. The allocation and deallocation of the cells have to be tracked to get the information needed for implementation. This approach is highly sensitive to memory utilization of the system and its effects on energy consumption and performance improvements will be diminishing on systems with high workload.  
 
 \subsection{Techniques to reducing refresh power}
 \label{sec:red:tech}

@@ -1,65 +1,53 @@
 \section{Discussion} 
 \label{sec:disc}
 
-\begin{table*}[t]
-	\caption{\label{tbl:summary}Summarized stuff.}
-        \begin{center}
-			\normalsize
-			\begin{tabular}{ l r r r r r r}
-				\textbf{Technique} & \parbox{2cm}{ \textbf{Refresh \linebreak information}} & \textbf{Modifies} & \parbox{1.7cm}{ \textbf{Refresh \linebreak reduction}} & \parbox{2.2cm}{ \textbf{DRAM power \linebreak reduction}} & \parbox{1.2cm}{\textbf{Storage \newline Overhead}} & \parbox{1.5cm}{\textbf{Performance impact}} \vspace{0.05cm} \\
-				\hline
-				\textit{Smart Refresh} & A & MC & 59\% & $12.13\%$ & $0.0048\%$  & Unknown  \\
-				\textit{Refrint} & A & MC, (?) & N/A & N/A  & $0.005\%$  & N/A  \\
-				\hline
-				\textit{RAIDR} & R & MC & $74.6\%$ & $8.3\%$  & $0.031\%$  & $4.1\%$  \\
-				\textit{DTail-R} & R & MC, DDRx & $87.9\%$ & $\approx 23\%$  & $0.0045\%$ & $\approx$ \textit{RAIDR} \\
-				\textit{RIO} & R & OS & $87.5\%$ & Unknown  & $0.1\%$  & $4.5\%$ \\
-				\textit{SECRET} & R & MC & $87.5\%$ & $18.6\%$  & $\approx 0.01\%$  & $\pm 1.4\%$  \\
-				\hline
-				\textit{DTail-V} & V & MC, DDRx, (OS) & $\approx 10\% \to 90\% $ & $41.7\%$ \textit{PARIS}  & $0.0015\%$ & $4.4\%$ \textit{PARIS}  \\
-				\textit{PARIS} & V & MC, OS & $\approx 10\% \to 90\%$ & Unknown  & $0.0015\%$  & Unknown \\
-				\hline
-				\textit{Flikker} & T & MC, OS, Apps & Unknown & $20\% \to 25\%$  & $0.005\%$  & $-1\%$   \\
-				\textit{Sparkk} & V, T  & MC, OS, Apps &  $50\%$ \textit{Flikker} & Unknown & Unknown  & Unknown \\
-				\hline
-			\end{tabular}
-		\end{center}
-\end{table*}
+% \begin{table*}[t]
+% 	\caption{\label{tbl:summary}Summarized stuff.}
+%         \begin{center}
+% 			\normalsize
+% 			\begin{tabular}{ l r r r r r r}
+% 				\textbf{Technique} & \parbox{2cm}{ \textbf{Refresh \linebreak information}} & \textbf{Modifies} & \parbox{1.7cm}{ \textbf{Refresh \linebreak reduction}} & \parbox{2.2cm}{ \textbf{DRAM power \linebreak reduction}} & \parbox{1.2cm}{\textbf{Storage \newline Overhead}} & \parbox{1.5cm}{\textbf{Performance impact}} \vspace{0.05cm} \\
+% 				\hline
+% 				\textit{Smart Refresh} & A & MC & 59\% & $12.13\%$ & $0.0048\%$  & Unknown  \\
+% 				\textit{Refrint} & A & MC, (?) & N/A & N/A  & $0.005\%$  & N/A  \\
+% 				\hline
+% 				\textit{RAIDR} & R & MC & $74.6\%$ & $8.3\%$  & $0.031\%$  & $4.1\%$  \\
+% 				\textit{DTail-R} & R & MC, DDRx & $87.9\%$ & $\approx 23\%$  & $0.0045\%$ & $\approx$ \textit{RAIDR} \\
+% 				\textit{RIO} & R & OS & $87.5\%$ & Unknown  & $0.1\%$  & $4.5\%$ \\
+% 				\textit{SECRET} & R & MC & $87.5\%$ & $18.6\%$  & $\approx 0.01\%$  & $\pm 1.4\%$  \\
+% 				\hline
+% 				\textit{DTail-V} & V & MC, DDRx, (OS) & $\approx 10\% \to 90\% $ & $41.7\%$ \textit{PARIS}  & $0.0015\%$ & $4.4\%$ \textit{PARIS}  \\
+% 				\textit{PARIS} & V & MC, OS & $\approx 10\% \to 90\%$ & Unknown  & $0.0015\%$  & Unknown \\
+% 				\hline
+% 				\textit{Flikker} & T & MC, OS, Apps & Unknown & $20\% \to 25\%$  & $0.005\%$  & $-1\%$   \\
+% 				\textit{Sparkk} & V, T  & MC, OS, Apps &  $50\%$ \textit{Flikker} & Unknown & Unknown  & Unknown \\
+% 				\hline
+% 			\end{tabular}
+% 		\end{center}
+% \end{table*}
+In the following section we compare all surveyed techniques more thoroughly and present some of our thoughts on their future potential.
 
-\todo[inline]{Drafty text below!}
+\subsection{Advantages and disadvantages of each approach}
+First of, we believe that the footprint of each surveyed technique is negligible when DRAM capacity increases. This as no technique has a larger storage overhead than $0.1\%$ of DRAM capacity.
 
+%\subsubsection*{Access Recency} 
+Access Recency techniques becomes less effective when DRAM capacity scales, as it is probable that the access rate per row will decrease. Among the approaches, this is one of the easier to implement, as it essentially only needs to track DRAM accesses and count the time between them. Techniques based on the other approaches can achieve the same or better results even when the access rate is low.
 
-\textbf{Advantages and disadvantages of each approach}
+%\subsubsection*{Retention Time}
+Using R as the refresh data gives a high efficiency independent of DRAM capacity, running applications, and memory utilization. A downside is that retention time profiling of the DRAM has to be performed in conjunction with first system startup. As retention time is highly dependent on temperature variations and has to be accounted for, which some techniques do; RAIDR, and RIO. 
 
-First of, we believe that the footprint of each surveyed technique is negligible when DRAM capacity increases.
+%\subsubsection*{Validity} 
+The V approach scales well, as it is more probably that more rows becomes invalid when DRAM capacity increases. It also produce high efficiency in many common systems. However, support on a OS level is needed to gather the V data, which increases the complexity. 
 
-Access Recency:
-Has low efficiency if the DRAM has a low access rate per row.
-$->$ scales bad with DRAM capacity (normally). The access rate will then be lower per row.
-When the access rate per DRAM row is high, the techniques are efficient. Provide two examples, Small embedded systems, large shared memory systems with small or no cache and many cores. 
-Access Recency is among the easier approaches to implement as it essentially only needs to track DRAM accesses and count the time between them.
+%\subsubsection*{Data Tolerance} 
+The efficiency of T based techniques is dependent of memory utilization besides of data with low criticality, as T do not target invalid memory areas. Using T information can yield a high decrease of refresh operations, but heavy modifications in several layers are required. 
 
-Retention Time:
-High efficiency independent of scaling, the running applications, and memory usage. Profiling has to be done somehow at/before first system startup. Temperature variations has to be accounted for, which some techniques do.
-All Retention Time techniques require profiling of the DRAM cells, a process that increases post-production test times. Other than that, the approach is not much harder to implement than Validity or Access Recency.
+\subsection{Modifications required and future potential}
 
-Validity:
-Efficiency dependent on memory utilization; the lower the better. Copes well with scaling, as it is more probably that more rows are invalid if the DRAM capacity increases. 
-Validity is somewhat easy to implement, as the information required is easily gathered (validity bit).
+%\todo[inline]{describe the table}
+%-no area info
 
-Data Tolerance:
-Efficiency dependent on application. If a large amount of data can be refreshed less often but still provide the necessary correctness, then Data Tolerance has a high potential. 
-To implement Data Tolerance based techniques, heavy modifications in several layers are required.
-
-
-Techniques that relies of ROR can have problems with DRAM capacities above \textit{32~GB}, as it then will be so many rows that need to be refreshed within the maximum refresh period. 
-
-3D stacked DRAM will affect all approaches. The higher temperature increases the refresh rate and stretches the demands for ROR based techniques to lower the refresh rate in order to keep up. The temperature will also be more uneven across the device due to the stacking, which give higher requirements for tracking the variations and adapt to them.
-
-\textbf{Modifications required and future potential}
-
-\todo[inline]{describe the table}
--no area info
+The method used for refresh can affect the possibility of a technique to scale. Techniques that relies on ROR can have problems with large DRAM capacities. This as the number of rows will be to large for ROR to refresh within the maximum refresh period. One example of this is PARIS, which fails to work on a system with \textit{32~GB} of memory \cite{dtail}. 
 
 Techniques which only require OS modifications is easier to adopt than those who need other changes. RIO is a good example of a technique which can be adopted after light kernel updates. The potential of RIO is significant compared to the modifications needed, as it reduces refreshes to the same degree as R based techniques that need hardware modifications at the cost of higher storage overhead. Moreover, all other surveyed techniques require specific support from at least the MC.
 
@@ -67,9 +55,11 @@ Among the techniques which modifies the MC, there are one group that in addition
 
 The techniques that requires the heavies modifications are those based on T. Even so, their potential is good and Sparkk's total DRAM power reduction is high, but the changes needed will not be transparent for the application programmer, who has to learn the concept of approximate data in order for the technique to be efficient. This is maybe to much to ask, therefor we do believe that T based techniques has lower future potential than R and V based techniques.
 
-We believe that the R and V approaches is the most promising for the future. This as techniques based on Access Recency, even though they are quite simple to implement, the trend is to increase the DRAM capacity and cache structures, which speaks against the usage of this approach. But of course, in systems that does not follow these trends (as the previous mentioned ones), Access Recency can have a chance to be adopted. 
+We believe that the R and V approaches is the most promising for the future. This as techniques based on A, even though they are quite simple to implement, the trend is to increase the DRAM capacity and cache structures, which speaks against the usage of this approach. But of course, in systems that does not follow these trends, Access Recency can have a chance to be adopted. Such systems could for example be small embedded systems or large shared memory systems with small or no cache and many cores. 
 
-\textbf{Which techniques can be combined?}
+3D stacked DRAM will affect all approaches. The higher temperature increases the refresh rate and stretches the demands for techniques using ROR to lower the refresh rate in order to keep up. The temperature will also be more uneven across the device due to the stacking, which give higher requirements for tracking the variations and adapt to them. One technique not surveyed in this paper, proposed by Sadri et al. \cite{tempaware}, tracks the temperature in different regions of a 3D DRAM and adapts the refresh rate accordingly in these areas.
+
+\subsection{Combining techniques}
 
 To achieve a larger DRAM power reduction, techniques from different approaches can be combined\footnote{Or you just shut off the computer and enjoy the autumn rain}. An example of this is RIO+PARIS, which increases the refresh reduction to $93.8\%$. If DTail-RV is used instead, the refresh reduction increases to $98.9\%$. DTail could be extended with an arbitrary T data acquisition technique for further improvements. All surveyed techniques target to reduce refresh power, but to achieve the greater goal of minimizing total DRAM power, smart scheduling of all DRAM accesses could advantageously be incorporated. 
 
