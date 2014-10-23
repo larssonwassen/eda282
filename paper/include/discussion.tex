@@ -1,16 +1,6 @@
 \section{Discussion} 
 \label{sec:disc}
 
-\todo[inline]{Drafty text below!}
-
-\textbf{Mention some smart scheduling techniques}
-herpa herpa
-
-CREAM CREAM \cite{cream}
-
-Another proposed technique is ESKIMO by Isen and John \cite{eskimo}, which focus at reducing total DRAM power through optimizing the accesses to the DRAM. By using one bit of a cache row to denote whether it hold nonsense data, it becomes possible to resolve some memory accesses in the caches, which otherwise would have needed to access DRAM. A memory region is regarded as nonsense if it has been deallocated, or allocated but not written to. The ISA has to be extended to provide the allocation and deallocation information. If a block has to be replaced in a write-through cache and the replaced block is dirty but also deallocated, the cache can ignore writing the replaced block to memory. Similarly, a write miss to a newly allocated area results in a read access that can also be ignored. Combining ESKIMO with the selective refresh implementation proposed by Ohsawa \cite{ohsawa}, $39\%$ of total DRAM power was saved on average.
-
-\textbf{Broadly compare the techniques}
 \begin{table*}[t]
 	\caption{\label{tbl:summary}Summarized stuff.}
         \begin{center}
@@ -22,82 +12,64 @@ Another proposed technique is ESKIMO by Isen and John \cite{eskimo}, which focus
 				\textit{Refrint} & A & MC, (?) & N/A & N/A  & $0.005\%$  & N/A  \\
 				\hline
 				\textit{RAIDR} & R & MC & $74.6\%$ & $8.3\%$  & $0.031\%$  & $4.1\%$  \\
-				\textit{DTail} & V, R & MC, DDRx & $88.2\% \to 98.9\% $ & $< 23\%$  & $0.006\%$ & R:  \\
+				\textit{DTail-R} & R & MC, DDRx & $87.9\%$ & $\approx 23\%$  & $0.0045\%$ & $\approx$ \textit{RAIDR} \\
 				\textit{RIO} & R & OS & $87.5\%$ & Unknown  & $0.1\%$  & $4.5\%$ \\
-				\textit{SECRET} & R & MC & $87.5\%$ & $18.6\%$  & $>0.01\%$  & $\pm 1.4\%$  \\
+				\textit{SECRET} & R & MC & $87.5\%$ & $18.6\%$  & $\approx 0.01\%$  & $\pm 1.4\%$  \\
 				\hline
-				\textit{PARIS} & V & MC & Unknown & $-41.7\%$ DTail-V  & $0.0015\%$  & $-4.4\%$ DTail-V  \\
+				\textit{DTail-V} & V & MC, DDRx & $\approx 10\% \to 90\% $ & $41.7\%$ \textit{PARIS}  & $0.0015\%$ & $4.4\%$ \textit{PARIS}  \\
+				\textit{PARIS} & V & MC & $\approx 10\% \to 90\%$ & Unknown  & $0.0015\%$  & Unknown \\
 				\hline
 				\textit{Flikker} & T & MC, OS, Apps & Unknown & $20\% \to 25\%$  & $0.005\%$  & $-1\%$   \\
-				\textit{Sparkk} & V, T  & MC, OS, Apps &  $+50\%$ Flikker & Unknown & Unknown  & Unknown \\
+				\textit{Sparkk} & V, T  & MC, OS, Apps &  $50\%$ \textit{Flikker} & Unknown & Unknown  & Unknown \\
 				\hline
 			\end{tabular}
 		\end{center}
 \end{table*}
 
-Smart refresh
-Result shows that the refresh reduction was in average 59\%
-and refresh power consumption savings was on average 52\%,
-all without any performance degradation. 12.13\% reduction of total DRAM
-The memory
-footprint of the modifications is 0.0048\% of total device
-capacity when three-bits counters are used assuming a DRAM
-row size of 8 KB.
+\todo[inline]{Drafty text below!}
 
 
-Refrint
-N/A
+\textbf{Advantages and disadvantages of each approach}
 
-Flikker
-The partitioning scheme can potentially lower performance as
-locality of data elements changes, but the found performance
-degradation was 1\% or less. No loss of reliability was ex-
-perienced, and the technique saved between 20-25\% of total
-DRAM power consumption depending on application.
-In simulations, N was two bits and Count
-was 5 bits, giving a total overhead of 0.005\%, with a row size
-of 8 KB.
+First of, we believe that the footprint of each surveyed technique is negligible when DRAM capacity increases.
 
-Sparkk
-Sparkk produces higher peak SNR at half the
-average refresh rate used for Flikker.
+Access Recency:
+Has low efficiency if the DRAM has a low access rate per row.
+$->$ scales bad with DRAM capacity (normally). The access rate will then be lower per row.
+When the access rate per DRAM row is high, the techniques are efficient. Provide two examples, Small embedded systems, large shared memory systems with small or no cache and many cores. 
+Access Recency is among the easier approaches to implement as it essentially only needs to track DRAM accesses and count the time between them.
+
+Retention Time:
+High efficiency independent of scaling, the running applications, and memory usage. Profiling has to be done somehow at/before first system startup. Temperature variations has to be accounted for, which some techniques do.
+All Retention Time techniques require profiling of the DRAM cells, a process that increases post-production test times. Other than that, the approach is not much harder to implement than Validity or Access Recency.
+
+Validity:
+Efficiency dependent on memory utilization; the lower the better. Copes well with scaling, as it is more probably that more rows are invalid if the DRAM capacity increases. 
+Validity is somewhat easy to implement, as the information required is easily gathered (validity bit).
+
+Data Tolerance:
+Efficiency dependent on application. If a large amount of data can be refreshed less often but still provide the necessary correctness, then Data Tolerance has a high potential. 
+To implement Data Tolerance based techniques, heavy modifications in several layers are required.
 
 
-Modifies applications:
-Flikker, Sparkk
+Techniques that relies of ROR can have problems with DRAM capacities above \textit{32~GB}, as it then will be so many rows that need to be refreshed within the maximum refresh period. 
 
-Modifies OS/runtime system:
-ESKIMO, Flikker, Sparkk.
+3D stacked DRAM will affect all approaches. The higher temperature increases the refresh rate and stretches the demands for ROR based techniques to lower the refresh rate in order to keep up. The temperature will also be more uneven across the device due to the stacking, which give higher requirements for tracking the variations and adapt to them.
 
-Modifies MC:
-All but RIO and PARIS.
+\textbf{Modifications required and future potential}
 
-Only in SW:
-RIO, PARIS.
+Techniques which can be adopted right away is .. , which also got a good potential.
 
-ROR doesn't work with $<$ 32 GB, cant keep up the req. speed.
+little more modifications...
 
-\textbf{Advantages and disadvantages for each approach}
--What is modified? / Where is stuff stored?
--How much knowledge does the techniques have about the running software?
--Is the approach's benefits application-depended?
--PARIS could have used CBR if sREF was implemented (as Dtail does), but this extends DDRx instruction set...
+Other techniques require more modifications to be adopted, but also has a higher potential. This and that technique.
 
-Smart Refresh:
-Employed its solution to 2 GB ram. What about todays sizes? How effective is the technique now? - Only works effective if large parts the memory is accessed, i.e. large part of the memory has to be valid to begin with. Is it so today?
+Techniques which we do not believe to have a larger future potential are the approaches based on Access Recency, alas it is quite simple to implement, the trend is to increase the DRAM capacity and cache structures, which speaks against the usage of this approach. But of course, in systems that does not follow these trends (as the previous mentioned ones), Access Recency can have a chance to be adopted. 
 
-Smart Refresh \& Refrint:
-Refrint is somewhat a extension of Smart Refresh. Smart Refresh's features can be laid somewhat equal to Refrint's time-based polices, whereas the data-based polices have no equivalence in Smart Refresh.
-
-They both modify the memory controller, and almost in the same way. But Refrint has no timers that is getting decremented the whole time, and instead copies a global `timer' to the line associated bits upon access. Of course Refrint's data-based polices also adds logic to the memory controller.
-
-Discuss energy savings. Hard to do eDRAM vs DRAM...
 
 \textbf{Which techniques can be combined?}
+Can any of the techniques from different approaches be combined?
 
-... any of these techniques can be combined with `scheduling real accesses together with refresh ops' (can them???)
+... they can all be combined with techniques orthogonal to all approaches, as smart scheduling techniques.
 
-\textbf{3D stacked DRAM discussion}
--Will any approach be benefited / dis-benefited by it?
-
--Which technique seems future proof?
+For example has Isen and John proposed the smart scheduling technique ESKIMO \cite{eskimo}, which focus at reducing total DRAM power through optimizing the accesses to the DRAM. By using one bit of a cache row to denote whether it hold nonsense data, it becomes possible to resolve some memory accesses in the caches, which otherwise would have needed to access DRAM. A memory region is regarded as nonsense if it has been deallocated, or allocated but not written to. The ISA has to be extended to provide the allocation and deallocation information. If a block has to be replaced in a write-through cache and the replaced block is dirty but also deallocated, the cache can ignore writing the replaced block to memory. Similarly, a write miss to a newly allocated area results in a read access that can also be ignored. Combining ESKIMO with the selective refresh implementation proposed by Ohsawa \cite{ohsawa}, $39\%$ of total DRAM power was saved on average.
