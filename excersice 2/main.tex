@@ -1,0 +1,227 @@
+\documentclass[a4paper]{article}
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\pagestyle{fancy}
+
+\lhead{Chalmers - EDA282}
+\chead{Excercise 2}
+\rhead{Dan Larsson}
+\lfoot{Oktober 2014}
+
+
+\begin{document}
+%\textcolor{red}{\huge Changed stuff marked in red.}
+
+\section*{Q1}
+\large{\textbf{What is Amdahl’s law? (give the equation, but then explain in [your own]     words) 2 points\\}}
+$S=\frac{1}{B + \frac{1}{n}\times(1-B)}$, $S$ is the speedup, $n$ the number of threads, $B$ the fraction of the program performed serially. Amdahl’s law is used to calculate the speedup gained from parallelization of a task, compared to the serial version. It can also be used for calculating the total speedup on a system from improving a subsystem.
+
+\section*{Q2}
+\large{\textbf{What is perfect scaling? Why do we fail to achieve perfect scaling     by doubling (a) the number of transistors, (b) the number of functional units, (c) the number of cores, or (d) the clock speed? Give a sentence or two of explanation for each of (a)-(d). 5 points\\}}
+Com up with some shiet
+
+\section*{Q3}
+\large{\textbf{
+What is a CHARM architecture? What two coordination mechanisms are needed in CHARM architectures? 5 points\\}}
+Coordinated homogeneous arrays of RISC microprocessors (CHARM), a SIMD system with locally distributed memory, ...
+%See architectural overview in hillis_SIMD_scalable_supercomputer for the coordination.
+
+\section*{Q4}
+\large{\textbf{
+What family of processor architectures has been used in both data parallel and thread parallel machines? (not the same version) 2 points
+The Connection Machine processor family. \\}}
+%See hillis_SIMD_data_parallel_algorithms uses data parallelism, starting with the paragraph ending page 1.
+%hillis_SIMD_scalable_supercomputer (CM-5) uses thread parallelism.
+
+\section*{Q5}
+\large{\textbf{
+Why was the cache ineffective in the CM-5? 2 points\\}}
+%Due to little spatial locality. page 3 right column in hillis_SIMD_scalable_supercomputer.
+
+\section*{Q6}
+\large{\textbf{
+How does simultaneous multithreading (SMT) make a single core appear to the software to be multiple cores running multiple threads? 5 points\\}}
+The processor keeps state for several threads and can dispatch instructions for the different threads interleaved. One thread is the main thread and gets the most execution time, but when the process running on that thread blocks, the other threads can execute and make some progress.
+
+\section*{Q7}
+\large{\textbf{
+In an architecture that supports SMT, some resources are shared     completely, some are partitioned to limit each thread’s usage, and     some are duplicated to provide private copies. Indicate S, P, or D     and include an explanation (e.g., why or how). For shared and     partitioned resources, say how many logical threads can share them. (23 points -- 1 point for each S/P/D plus explanation) for the \\}}
+
+\textbf{Intel Pentium:} two Hyperthreads.
+\begin{enumerate}
+\item    
+\textbf{trace cache (the special instruction cache holding sequences of decoded uops)\\}
+S - Shared by the logical processors. Stores decoded instructions.
+\item
+\textbf{ucode ROM\\}
+S - Shared by the logical processors. Used to store complex IA-32 instructions.
+\item
+\textbf{instruction TLB (iTLB)\\}
+D - Translates instructions addresses to physical addresses on TC misses.
+\item
+\textbf{instruction fetch unit\\}
+    S - Shared by the logical processors.
+\item
+\textbf{instruction decoder logic\\}
+S and P - The regular uop decoder is shared while the IA-32 decoder is partitioned.
+\item
+\textbf{instruction queues (memory op queue and “all other” op queue)\\}
+P - Made sure so that not one thread occupy all entries except for when running self.
+\item
+\textbf{retirement logic\\}
+S - Shared by the logical processors.
+\item
+\textbf{uop schedulers\\}
+S - Shared by the logical processors. The op buffer is however partitioned so one logical processor can not occupy all places.
+\item
+\textbf{general purpose architected registers\\}
+D - Each logical processor can utilize all architecture registers.
+\item
+\textbf{Register Alias Table (RAT) (used for expanding the few architected registers to which the ISA refers, mapping them onto a much larger physical register file)\\}
+D - Each logical processor need to keep track of the complete architectural state.    
+\item
+\textbf{physical registers\\}
+S - Register renaming makes sure each processor gets it’s own register.
+\item
+\textbf{branch predictor’s Return Stack Buffer (RBS)\\}
+    D - Better predictions if done per thread.
+\item
+\textbf{branch predictor’s global history array\\}
+    S - Entries tagged with logical processor id.
+\item
+\textbf{data cache (shared)\\}
+S - Shared by the logical processors.
+\item
+\textbf{interrupt controller\\}
+D - for each logical processor as it handles it’s own interrupts.
+
+\textbf{Sun rock:}
+    See RockIEEEmicro
+\item
+\textbf{instruction fetch unit\\}
+\item
+\textbf{instruction decoder logic\\}
+\item
+\textbf{instruction TLB (iTLB)\\}
+\item
+\textbf{retirement logic\\}
+\item
+\textbf{data cache\\}
+\item
+\textbf{FPU\\}
+
+\textbf{Sun Niagara:}
+    %see niagra_IEEE_MICRO
+\item
+\textbf{data TLB\\}
+\item
+\textbf{store buffers\\}
+\end{enumerate}
+\section*{Q8}
+\large{\textbf{
+How many threads can run on one physical Intel Pentium core? On one Sun Rock core? On one Niagara Sparc pipe? 3 points\\}}
+The intel Pentium can run two Hyperthreads. ee papers from the Q above.
+
+\section*{Q9}
+\large{\textbf{
+Name the three processors we’ve talked about (in papers or in lecture slides) that support Transactional Memory in hardware. Which ones are available in commercial products? 3 points\\}}
+First commercial processors with TM support:
+Rock (Sun)(2010) first design to include TM, but cancelled
+BlueGeneQ (2011) some form of HTM, custom made by IBM
+%Haswell, see SC13-TSX and haswell_analysis
+
+\section*{Q10}
+\large{\textbf{
+Name one     advantage and one disadvantage of having SIMD ISA extension instructions and FP instructions share resources. Explain your answers. Which specific resources are shared in the Intel     Pentium/MMX architecture? In the Sun Rock/Vis architecture? 5 points\\}}
+
+%See RockIEEEmicro and marr_hyperthreading.
+
+\section*{Q11}
+\large{\textbf{
+What is a data race? What is atomicity? What is sequential     consistency? 3 points\\}}
+
+Data race = see page 3 (upper right corner) in p48-boehm-adve-mem-model.
+mutual exclusion = atomicity
+SC = Lecture 4 slide 25
+
+\section*{Q12}
+\large{\textbf{
+%Assume x is initially 999. Explain how, when executed by two threads simultaneously, the following code can result in x holding either 1 or 2000. 10 points// x is number variable represented in a way that requires two words// on the target machine. Assume x is stored in two parts, x_hi and x_lo,// each holding three decimal digits.// you can view highword() and lowword() as #define’s in C (syntactic sugar)// to access the hi and lo parts of a number variable// incr() does whatever is required to add one to its number variable argumentreg1 = highword(x);reg2 = lowword(x);x = incr(x);highword(x) = reg1;lowword(x) = reg2;    see page 3 in p48-boehm-adve-mem-model.
+\\}}
+
+\section*{Q13}
+\large{\textbf{
+Explain the difference between write invalidate and write update cache coherence protocols. 5 points\\}}
+When using the Write-Invalidate CCP, a memory write to a shared address will cause invalidations to be sent to all caches holding that data. When using Write Update CCP, instead of invalidating the value in all the other caches, the new value will be distributed to update their values.
+
+\section*{Q14}
+\large{\textbf{
+What are the possible cache line states in the Blue Gene/P coherence protocol? 2 points\\}}
+The blue Gene/P uses write-through for both L1 and L2 and does not have any hardware CCP the cache lines can be either Valid or Invalid (Two states).
+
+\section*{Q15}
+\large{\textbf{
+How does a snoop filter improve performance and save energy? (be specific about which coherence commands it filters when) 5 points\\}}
+A snoop filter removes invalidates and snoops for a cache line that is not in the cache, thus removing unnecessary snoops and invalidates. The improvements gained by a snoop filter depends on both the type of filter used and of the cache it is used with. For a destination based snoop filter there is small energy savings and if the cache is multi-ported, snoops and invalidates does not have to compete with regular accesses, so the performance gain is also minimal. This as the snoops and invalidates still traverse the bus draining energy and causing congestion and the added hardware for the filter consumes energy. For a source based snoop filter the commands will not need to traverse the bus and will thus save more energy and cause less congestion (performance up).
+
+\section*{Q16}
+\large{\textbf{
+What limitation of the BG/P L1 cache makes the snoop filter critical to performance? 2 points\\}}
+The L1 cache in the BG/P only have one access port meaning that snoops and invalidates would compete with regular accesses. THis together with the caches being write-through and invalidations being sent to all caches every time a value is written makes the snoop filters very important.
+
+\section*{Q17}
+\large{\textbf{
+Could a snoop filter be used to improve performance/efficiency of a bus-based write-update protocol? How, or why not? 2 points\\}}
+With a source based snoop-filter, snoops for data that does not exist in a cache is removed and never put on the bus. This will therefore lower the traffic on the bus and thus increase performance. Also, in a single access-port memory the snoops would compete with the normal accesses and removing unnecessary snoops would therefore decrease congestion of the port and increase performance.
+
+\section*{Q18}
+\large{\textbf{
+What is dimension-order routing? When/why is it used? 2 points\\}}
+Dimension order routing is when a message is routed through a system one dimension at a time. If node N(0,0) sends a packet to N(10,7) the packet will go to node N(10,0) and then continue on to N(10,7). The same applies in a cubic interconnect, but simply with one more dimension.  
+
+\section*{Q19}
+\large{\textbf{
+What is a flit (in general, not in the context of any specific     network)? Is it different from a packet? Explain. 2 points\\}}
+Flow control unit, flit, is the smallest part of a packet that get transmitted on a interconnect. A flit gets dropped in the case of congestion and thus has to be retransmitted.
+
+\section*{Q20}
+What network topology was used in the Connection Machine CM-5? Why? 5 points
+
+%hillis_SIMD_scalable_supercomputer
+Fat tree (figure 4). 
+
+\section*{Q21}
+\large{\textbf{
+In the Stanford DASH system, bus bandwidth imposed a greater limit on remote memory bandwidth than the network bisection bandwidth. Explain a) what this means (e.g., what’s the bisection     bandwidth?), and b) why was this the case? 5 points \\}}
+Bisection bandwidth is the bandwidth through the path in a interconnect split into two parts at most narrow point. E.g. in a tree interconnect the bisection bandwidth would be 1u as we would cut the tree at the root were only one vertex exist. In DASH each nodes memory bus is connected to a global bus, and when a remote request is issued the local bus will be traversed twice (local->global->local) and thus the traffic on the local bus will be twice as high. This means that the local bandwidth will be more important than the bisection brandwidth.   
+
+\section*{Q22}
+\large{\textbf{
+In what types of application areas are VLIW processors employed today? 2 points\\}}
+In processing of digital signals (DSPs) and multimedia.
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
