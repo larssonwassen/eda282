@@ -21,11 +21,11 @@
 %\textcolor{red}{\huge Changed stuff marked in red.}
 
 \section*{Q1}
-\large{\textbf{What is Amdahl’s law? (give the equation, but then explain in [your own]     words) 2 points\\}}
+\large{\textbf{What is Amdahl’s law? (give the equation, but then explain in [your own] words) 2 points\\}}
 $S=\frac{1}{B + \frac{1}{n}\times(1-B)}$, $S$ is the speedup, $n$ the number of threads, $B$ the fraction of the program performed serially. Amdahl’s law is used to calculate the speedup gained from parallelization of a task, compared to the serial version. It can also be used for calculating the total speedup on a system from improving a subsystem.
 
 \section*{Q2}
-\large{\textbf{What is perfect scaling? Why do we fail to achieve perfect scaling     by doubling (a) the number of transistors, (b) the number of functional units, (c) the number of cores, or (d) the clock speed? Give a sentence or two of explanation for each of (a)-(d). 5 points\\}}
+\large{\textbf{What is perfect scaling? Why do we fail to achieve perfect scaling by doubling (a) the number of transistors, (b) the number of functional units, (c) the number of cores, or (d) the clock speed? Give a sentence or two of explanation for each of (a)-(d). 5 points\\}}
 Com up with some shiet
 
 \section*{Q3}
@@ -53,7 +53,7 @@ The processor keeps state for several threads and can dispatch instructions for 
 
 \section*{Q7}
 \large{\textbf{
-In an architecture that supports SMT, some resources are shared     completely, some are partitioned to limit each thread’s usage, and     some are duplicated to provide private copies. Indicate S, P, or D     and include an explanation (e.g., why or how). For shared and     partitioned resources, say how many logical threads can share them. (23 points -- 1 point for each S/P/D plus explanation) for the \\}}
+In an architecture that supports SMT, some resources are shared completely, some are partitioned to limit each thread’s usage, and some are duplicated to provide private copies. Indicate S, P, or D and include an explanation (e.g., why or how). For shared and partitioned resources, say how many logical threads can share them. (23 points -- 1 point for each S/P/D plus explanation) for the \\}}
 
 \textbf{Intel Pentium:} two Hyperthreads.
 \begin{enumerate}
@@ -140,13 +140,13 @@ BlueGeneQ (2011) some form of HTM, custom made by IBM
 
 \section*{Q10}
 \large{\textbf{
-Name one     advantage and one disadvantage of having SIMD ISA extension instructions and FP instructions share resources. Explain your answers. Which specific resources are shared in the Intel     Pentium/MMX architecture? In the Sun Rock/Vis architecture? 5 points\\}}
-
+Name one advantage and one disadvantage of having SIMD ISA extension instructions and FP instructions share resources. Explain your answers. Which specific resources are shared in the Intel Pentium/MMX architecture? In the Sun Rock/Vis architecture? 5 points\\}}
+One advantage is that there is no need for adding additional hardware for keeping the architectural state and thus simplifies the design, while as the drawback is that you can not us FP instructions in the same routine as the added instructions and corruption of the data can occur. For the MMX architecture, the added registers maps onto the FP registers meaning these are shared between the two. 
 %See RockIEEEmicro and marr_hyperthreading.
 
 \section*{Q11}
 \large{\textbf{
-What is a data race? What is atomicity? What is sequential     consistency? 3 points\\}}
+What is a data race? What is atomicity? What is sequential consistency? 3 points\\}}
 
 Data race = see page 3 (upper right corner) in p48-boehm-adve-mem-model.
 mutual exclusion = atomicity
@@ -189,23 +189,22 @@ Dimension order routing is when a message is routed through a system one dimensi
 
 \section*{Q19}
 \large{\textbf{
-What is a flit (in general, not in the context of any specific     network)? Is it different from a packet? Explain. 2 points\\}}
+What is a flit (in general, not in the context of any specific network)? Is it different from a packet? Explain. 2 points\\}}
 Flow control unit, flit, is the smallest part of a packet that get transmitted on a interconnect. A flit gets dropped in the case of congestion and thus has to be retransmitted.
 
 \section*{Q20}
-What network topology was used in the Connection Machine CM-5? Why? 5 points
+\large{\textbf{What network topology was used in the Connection Machine CM-5? Why? 5 points\\}}
 
 %hillis_SIMD_scalable_supercomputer
 Fat tree (figure 4). 
 
 \section*{Q21}
 \large{\textbf{
-In the Stanford DASH system, bus bandwidth imposed a greater limit on remote memory bandwidth than the network bisection bandwidth. Explain a) what this means (e.g., what’s the bisection     bandwidth?), and b) why was this the case? 5 points \\}}
+In the Stanford DASH system, bus bandwidth imposed a greater limit on remote memory bandwidth than the network bisection bandwidth. Explain a) what this means (e.g., what’s the bisection bandwidth?), and b) why was this the case? 5 points \\}}
 Bisection bandwidth is the bandwidth through the path in a interconnect split into two parts at most narrow point. E.g. in a tree interconnect the bisection bandwidth would be 1u as we would cut the tree at the root were only one vertex exist. In DASH each nodes memory bus is connected to a global bus, and when a remote request is issued the local bus will be traversed twice (local->global->local) and thus the traffic on the local bus will be twice as high. This means that the local bandwidth will be more important than the bisection brandwidth.   
 
 \section*{Q22}
-\large{\textbf{
-In what types of application areas are VLIW processors employed today? 2 points\\}}
+\large{\textbf{In what types of application areas are VLIW processors employed today? 2 points\\}}
 In processing of digital signals (DSPs) and multimedia.
 
 
