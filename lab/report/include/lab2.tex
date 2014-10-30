@@ -24,26 +24,32 @@ To use MESI-MG instead of MESI or MSI yields a huge performance degradation of 4
 \end{figure}
 
 \subsection{Task 4}
-To add the Owner (O) state to the existing MESI CCP, only small changes are needed. In \textit{readLine()} and \textit{remoteWriteAction()} no changes are needed. Turning to \textit{readRemoteAction()}, transitions from the E, M, and O states to the O state are added, and all of these transitions provide data to the calling cache. The action taken when in the shared state is removed. For \textit{writeLine()}, the only change needed is to take the same actions as when in the O state as in the S state. For the cache access statistics there is no need for change.
+To add the Owner (O) state to the existing MESI CCP, only small changes are needed. In \textit{readLine()} and \textit{writeRemoteAction()} no changes are needed. Turning to \textit{readRemoteAction()}, transitions from the E, M, and O states to the O state are added, and all of these transitions provide data to the calling cache. The action taken when in the shared state is removed. For \textit{writeLine()}, the only change needed is to take the same actions as when in the O state as in the S state. For the cache access statistics there is no need for change. \textcolor{red}{One additional change needed to the MESI protocol is that when a cache line is in the O state and gets replaced the owner ship must be returned to the memory.}
+ 
+\textcolor{red}{We assume that the next level cache, the LLC, does not implement any CCP as there is no other caches on the same level that needs to be synchronized with. Because of this, change of ownership is not explicitly performed in any of the \textit{readLine(), writeLine(), readRemoteAction(), or writeRemoteAction()} functions. This as, when the line gets replaced, the state information gets overwritten with the replacing line's state information.} 
 
 \par\noindent
+
+
 \begin{minipage}[t]{.5\textwidth}
-\begin{lstlisting}[language=C,frame=lrtb]
-In readLine()
+
+	\begin{lstlisting}[language=C,frame=lrtb,style=base]
+In ¤readRemoteAction()¤
 	if(MODIFIED) {...}
 	if(EXCLUSIVE) {...}
 
 	if(SHARED)
 		return data		
 
-In writeRemoteAction()
+In ¤writeLine()¤
 	if(SHARED) {...}
-\end{lstlisting}%
+	\end{lstlisting}%
 \end{minipage}%
 \hfill
 \begin{minipage}[t]{.5\textwidth}
-\begin{lstlisting}[frame=lrtb]
-In readLine()
+
+	\begin{lstlisting}[language=C,frame=lrtb,style=base]
+In ¤readRemoteAction()¤
 	if(MODIFIED || EXCLUSIVE || OWNER) 
 		state = OWNER
 		return data
@@ -51,7 +57,7 @@ In readLine()
 	if(SHARED)
 	{}
 
-In writeRemoteAction()
+In ¤writeLine()¤
 	if(SHARED || OWNER) {...}
-\end{lstlisting}%
+	\end{lstlisting}%
 \end{minipage}%

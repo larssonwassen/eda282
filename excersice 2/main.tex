@@ -18,6 +18,8 @@
 
 
 \begin{document}
+\section*{}
+I have discussed my solutions with Jonas Hemlin.
 %\textcolor{red}{\huge Changed stuff marked in red.}
 
 \section*{Q1}
@@ -26,30 +28,37 @@ $S=\frac{1}{B + \frac{1}{n}\times(1-B)}$, $S$ is the speedup, $n$ the number of 
 
 \section*{Q2}
 \large{\textbf{What is perfect scaling? Why do we fail to achieve perfect scaling by doubling (a) the number of transistors, (b) the number of functional units, (c) the number of cores, or (d) the clock speed? Give a sentence or two of explanation for each of (a)-(d). 5 points\\}}
-Com up with some shiet
+Amdahl's law can be used for all these cases and it would show the actual speedup gained.
+\begin{enumerate}
+\item
+One have to know what to do with all the new transistors. Simply adding more lines to the caches or widening the memory bus will double the performance as all parts in the system have to be improved on. 
+\item
+The system will not be able to utilize all FU at the same time without also beefing up the units feeding them with data. 
+\item
+As the code that can be distributed for parallel execution in a program is not 100\%, the gain from increasing the number of cores will diminish.  
+\item
+When increasing just the clock speed, long latency operations like cache misses and I/O does not gain any speed improvements and thereby holds the system back.
+\end{enumerate}
 
 \section*{Q3}
 \large{\textbf{
 What is a CHARM architecture? What two coordination mechanisms are needed in CHARM architectures? 5 points\\}}
-Coordinated homogeneous arrays of RISC microprocessors (CHARM), a SIMD system with locally distributed memory, ...
-%See architectural overview in hillis_SIMD_scalable_supercomputer for the coordination.
+CHARM stands for Coordinated Homogeneous Arrays of RISC Microprocessors and is a collection, ranging from a few to thousands, of simple processors working in parallel. They communicate by fast networks which scales well with the number of processors.  The two coordination mechanisms needed in a CHARM architecture is, a low latency interconnect allowing processors to access other processors memories and data, and a mechanism for keeping global state between the processors in an efficient way. 
 
 \section*{Q4}
 \large{\textbf{
-What family of processor architectures has been used in both data parallel and thread parallel machines? (not the same version) 2 points
-The Connection Machine processor family. \\}}
-%See hillis_SIMD_data_parallel_algorithms uses data parallelism, starting with the paragraph ending page 1.
-%hillis_SIMD_scalable_supercomputer (CM-5) uses thread parallelism.
+What family of processor architectures has been used in both data parallel and thread parallel machines? (not the same version) 2 points\\}}
+The CM-5 processor architecture is thread parallel and data parallel, while the previous CM machines only is data parallel. Both belongs to the Connection Machine processor family by TMC.
 
 \section*{Q5}
 \large{\textbf{
 Why was the cache ineffective in the CM-5? 2 points\\}}
-%Due to little spatial locality. page 3 right column in hillis_SIMD_scalable_supercomputer.
+Small RISC processors depend on caches to bridge the speed gap of the memory and the processor, but in most of the applications running on a CM-5 almost all of main memory is accessed during one program iteration meaning that the  data in the cache will be written over and the hit rate of the cache will be low. 
 
 \section*{Q6}
 \large{\textbf{
 How does simultaneous multithreading (SMT) make a single core appear to the software to be multiple cores running multiple threads? 5 points\\}}
-The processor keeps state for several threads and can dispatch instructions for the different threads interleaved. One thread is the main thread and gets the most execution time, but when the process running on that thread blocks, the other threads can execute and make some progress.
+The processor keeps state for several threads and can dispatch instructions for the different threads interleaved. When a thread starts a long latency operation, the other threads can execute and make progress. The threads are seen as processors on their own by the OS, meaning that it simply schedules processes for them as it would in as system with many actual processors or singled threaded cores.
 
 \section*{Q7}
 \large{\textbf{
@@ -62,13 +71,13 @@ In an architecture that supports SMT, some resources are shared completely, some
 S - Shared by the logical processors. Stores decoded instructions.
 \item
 \textbf{ucode ROM\\}
-S - Shared by the logical processors. Used to store complex IA-32 instructions.
+S - Shared by the threads (logical processors). Used to store complex IA-32 instructions.
 \item
 \textbf{instruction TLB (iTLB)\\}
 D - Translates instructions addresses to physical addresses on TC misses.
 \item
 \textbf{instruction fetch unit\\}
-    S - Shared by the logical processors.
+S - Shared by the threads (logical processors).
 \item
 \textbf{instruction decoder logic\\}
 S and P - The regular uop decoder is shared while the IA-32 decoder is partitioned.
@@ -77,85 +86,104 @@ S and P - The regular uop decoder is shared while the IA-32 decoder is partition
 P - Made sure so that not one thread occupy all entries except for when running self.
 \item
 \textbf{retirement logic\\}
-S - Shared by the logical processors.
+S - Shared by the threads (logical processors).
 \item
 \textbf{uop schedulers\\}
-S - Shared by the logical processors. The op buffer is however partitioned so one logical processor can not occupy all places.
+S - Shared by the threads (logical processors). The op buffer is however partitioned so one thread can not occupy all places.
 \item
 \textbf{general purpose architected registers\\}
-D - Each logical processor can utilize all architecture registers.
+D - Each thread (logical processor) can utilize all architecture registers.
 \item
 \textbf{Register Alias Table (RAT) (used for expanding the few architected registers to which the ISA refers, mapping them onto a much larger physical register file)\\}
-D - Each logical processor need to keep track of the complete architectural state.    
+D - Each thread (logical processor) keeps track of the complete architectural state.    
 \item
 \textbf{physical registers\\}
 S - Register renaming makes sure each processor gets it’s own register.
 \item
 \textbf{branch predictor’s Return Stack Buffer (RBS)\\}
-    D - Better predictions if done per thread.
+D - Better predictions if done per thread.
 \item
 \textbf{branch predictor’s global history array\\}
-    S - Entries tagged with logical processor id.
+S - Entries tagged with thread (logical processor) id.
 \item
 \textbf{data cache (shared)\\}
-S - Shared by the logical processors.
+S - Shared by the threads (logical processors).
 \item
 \textbf{interrupt controller\\}
-D - for each logical processor as it handles it’s own interrupts.
+D - for each thread(logical processor) as it handles it’s own interrupts.
 
-\textbf{Sun rock:}
-    See RockIEEEmicro
+\textbf{Sun rock:} Two threads (16 cores, 32 threads per chip).  
 \item
 \textbf{instruction fetch unit\\}
+P - The IFU is shared among four cores, which also means that all threads in those cores share the IFU to (8 threads). The IFU fetches instruction in a round robin fashion meaning that no one thread can use all resources.
+
 \item
 \textbf{instruction decoder logic\\}
+P - One Decoder in each pipeline, which there are one per core (2 threads) and the instruction is decoded in a round robin fashion. 
+
 \item
 \textbf{instruction TLB (iTLB)\\}
+S - There is one iTLB per iCache, and there is one iCache in each IFU, meaning four cores(8 threads) share one iTLB.
+
 \item
 \textbf{retirement logic\\}
+S - There is retirement logic in pipeline, which there are one for each core (2 threads).
+
 \item
 \textbf{data cache\\}
+S - One D-Cache is shared between two cores (4 threads), but each core have it's own tag array(2 threads).
+
 \item
 \textbf{FPU\\}
+S - One FPU is shared between two cores (4 threads).
 
-\textbf{Sun Niagara:}
-    %see niagra_IEEE_MICRO
+\textbf{Sun Niagara:} Four threads per Sparc Pipe (eight Sparc Pipes per chip, 32 threads).
 \item
 \textbf{data TLB\\}
+S - Each Sparc Pipe have it's own DTLB. (4 threads)
+
 \item
 \textbf{store buffers\\}
+D - Each thread have its own store buffers. The buffers is used to check for RAW hazards.
+
 \end{enumerate}
 \section*{Q8}
 \large{\textbf{
 How many threads can run on one physical Intel Pentium core? On one Sun Rock core? On one Niagara Sparc pipe? 3 points\\}}
-The intel Pentium can run two Hyperthreads. ee papers from the Q above.
+The Intel Pentium can run two threads, Sun Rock two threads, and Sparc Niagara four threads per Sparc Pipe.
 
 \section*{Q9}
 \large{\textbf{
 Name the three processors we’ve talked about (in papers or in lecture slides) that support Transactional Memory in hardware. Which ones are available in commercial products? 3 points\\}}
-First commercial processors with TM support:
-Rock (Sun)(2010) first design to include TM, but cancelled
-BlueGeneQ (2011) some form of HTM, custom made by IBM
-%Haswell, see SC13-TSX and haswell_analysis
+The Intel's Haswell uses HTM and is commercially available. Sun's Rock processor include HTM and was commercially available but got canceled. BlueGeneQ made by IBM is part of Top 500 supercomputers, thus commercial, and uses HTM.
 
 \section*{Q10}
 \large{\textbf{
 Name one advantage and one disadvantage of having SIMD ISA extension instructions and FP instructions share resources. Explain your answers. Which specific resources are shared in the Intel Pentium/MMX architecture? In the Sun Rock/Vis architecture? 5 points\\}}
-One advantage is that there is no need for adding additional hardware for keeping the architectural state and thus simplifies the design, while as the drawback is that you can not us FP instructions in the same routine as the added instructions and corruption of the data can occur. For the MMX architecture, the added registers maps onto the FP registers meaning these are shared between the two. 
-%See RockIEEEmicro and marr_hyperthreading.
+One advantage is that there is no need for adding additional hardware for keeping the architectural state and thus simplifies the design and saves hardware, while as the drawback is that you can not us FP instructions in the same routine as the added instructions without corruption of the data occurring. For the MMX architecture, the added registers maps onto the FP registers, meaning these are shared between the two. It is the registers that are shared in Sun Vis to.
 
 \section*{Q11}
 \large{\textbf{
 What is a data race? What is atomicity? What is sequential consistency? 3 points\\}}
-
-Data race = see page 3 (upper right corner) in p48-boehm-adve-mem-model.
-mutual exclusion = atomicity
-SC = Lecture 4 slide 25
+Data race = When two or more threads accesses and writes to the same address without proper synchronization a data race arises.
+atomicity = A operation is performed mutually exclusive, that is, the operation is performed without any disturbance.  
+SC = Sequential Consistency is enforced if the end result of a parallel execution becomes the same as if the operations had been performed sequentially. 
 
 \section*{Q12}
 \large{\textbf{
-%Assume x is initially 999. Explain how, when executed by two threads simultaneously, the following code can result in x holding either 1 or 2000. 10 points// x is number variable represented in a way that requires two words// on the target machine. Assume x is stored in two parts, x_hi and x_lo,// each holding three decimal digits.// you can view highword() and lowword() as #define’s in C (syntactic sugar)// to access the hi and lo parts of a number variable// incr() does whatever is required to add one to its number variable argumentreg1 = highword(x);reg2 = lowword(x);x = incr(x);highword(x) = reg1;lowword(x) = reg2;    see page 3 in p48-boehm-adve-mem-model.
-\\}}
+Assume x is initially 999. Explain how, when executed by two threads simultaneously, the following code can result in x holding either 1 or 2000. 10 points\\}}
+\textit{x is number variable represented in a way that requires two words on the target machine. Assume x is stored in two parts, x\_hi and x\_lo, each holding three decimal digits. you can view highword() and lowword() as \#define’s in C (syntactic sugar) to access the hi and lo parts of a number variable incr() does whatever is required to add one to its number variable argument.}
+\lstset{language=C,frame=single}
+\begin{lstlisting}
+reg1 = highword(x);
+reg2 = lowword(x);
+x = incr(x);
+highword(x) = reg1;
+lowword(x) = reg2; 
+\end{lstlisting}
+The first case, x becomes 1, happens when one thread first reads the high word equal to 0, and then gets context switched. The other thread then completes it's code and increases x to 1000. When the first thread then executes again it reads the low word, now equal to 0 instead of 999, increases it to 1, and writes it back.
+
+For the second case, almost the same thing happens, the first thread executes until it has stored the high word of x increased to 1, gets context switched, and the other thread reads 1999 instead of 999. Thread two then increments 1999 to 2000, gets switched out for the first thread that stores 1000, gets switched back and stores 2000.  
 
 \section*{Q13}
 \large{\textbf{
@@ -165,7 +193,7 @@ When using the Write-Invalidate CCP, a memory write to a shared address will cau
 \section*{Q14}
 \large{\textbf{
 What are the possible cache line states in the Blue Gene/P coherence protocol? 2 points\\}}
-The blue Gene/P uses write-through for both L1 and L2 and does not have any hardware CCP the cache lines can be either Valid or Invalid (Two states).
+The blue Gene/P uses write-through for both L1 and L2 and does not have any hardware CCP the cache lines can be Valid or Invalid (Two states).
 
 \section*{Q15}
 \large{\textbf{
@@ -190,18 +218,16 @@ Dimension order routing is when a message is routed through a system one dimensi
 \section*{Q19}
 \large{\textbf{
 What is a flit (in general, not in the context of any specific network)? Is it different from a packet? Explain. 2 points\\}}
-Flow control unit, flit, is the smallest part of a packet that get transmitted on a interconnect. A flit gets dropped in the case of congestion and thus has to be retransmitted.
+Flow control unit, flit, is the part of a packet that gets blocked in the case of congestion. In a cut-through switching a flit is the entire packet.
 
 \section*{Q20}
 \large{\textbf{What network topology was used in the Connection Machine CM-5? Why? 5 points\\}}
-
-%hillis_SIMD_scalable_supercomputer
-Fat tree (figure 4). 
+The data network topology of the CM-5 is Fat tree which is used as it scales well with the number of nodes. For sending packets around the network a packet-switched router is used and adaptive load balancing that together minimizes the network congestion and makes it deadlock-free. A fat tree's bandwidth naturally increases with the number of nopes which makes it perfect for a scalable application. It also have good fault tolerant features.
 
 \section*{Q21}
 \large{\textbf{
 In the Stanford DASH system, bus bandwidth imposed a greater limit on remote memory bandwidth than the network bisection bandwidth. Explain a) what this means (e.g., what’s the bisection bandwidth?), and b) why was this the case? 5 points \\}}
-Bisection bandwidth is the bandwidth through the path in a interconnect split into two parts at most narrow point. E.g. in a tree interconnect the bisection bandwidth would be 1u as we would cut the tree at the root were only one vertex exist. In DASH each nodes memory bus is connected to a global bus, and when a remote request is issued the local bus will be traversed twice (local->global->local) and thus the traffic on the local bus will be twice as high. This means that the local bandwidth will be more important than the bisection brandwidth.   
+Bisection bandwidth is the bandwidth through the path in a interconnect split into two parts at most narrow point. E.g. in a tree interconnect the bisection bandwidth would be 1u as we would cut the tree at the root were only one vertex exist. In DASH each nodes memory bus is connected to a global bus, and when a remote request is issued the local bus will be traversed twice (local-$>$global-$>$local) and thus the traffic on the local bus will be twice as high. This means that the local bandwidth will be more important than the bisection bandwidth.   
 
 \section*{Q22}
 \large{\textbf{In what types of application areas are VLIW processors employed today? 2 points\\}}

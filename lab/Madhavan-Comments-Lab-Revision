@@ -1,0 +1,33 @@
+Task 1 - Benchmark Discussion
+	-ok
+Task 2 - MB1 and MB2 - MSI vs MESI
+	a)MB2 analysis
+		Compare MSI and MESI - ok
+		impact of increasing dataset size - ok
+	b)MB1 analysis
+		Compare MSI and MESI - ok
+		impact of increasing dataset size - ok.
+
+		-“the benefit of the E state increases due to more frequent reads from globally invalid cache lines”. The forementioned statement is vague. Please clarify.
+		-The reasoning in most parts seem to be fine and to the point. It would be better if you could refer to Appendix and highlight some numbers when discussing performance trends. Provide a sense of numbers the reader can expect to see without actually making them refer the entire table.
+
+Task 3 - MB1 and MB3 analysis - MESI vs MESIMG
+	a)MB3 analysis
+		Compare MESI and MESIMG - ok
+		impact of increasing dataset size - ok
+	b)MB1 analysis
+		Compare MESI and MESIMG - ok
+		impact of increasing dataset size - ok
+
+Lab2
+
+Task 1 - Benchmark Discussion
+	-ok
+Task 2 - Parallelization Strategy
+	-ok
+Task 3 - Kernel - MSI vs MESI vs MESIMG
+	Compare MSI, MESI and MESIMG - ok
+	impact of increasing dataset size - ok
+
+Task 4 - Adding O state to the protocol
+	Rethink code in readLine() function. Your discussion also assumes that the Owner (private) cache always retains the cache line. What happens in the case involving read and write operations when they have been evicted from the owner due to capacity issues.
