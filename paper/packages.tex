@@ -11,6 +11,11 @@
 \graphicspath{{./fig/}}
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \usepackage{todonotes}
+\usepackage[nodayofweek]{datetime}
+
+\newdateformat{dday}{
+	\monthname[\THEMONTH], \THEYEAR
+}
 
 
 % Some very useful LaTeX packages include:
